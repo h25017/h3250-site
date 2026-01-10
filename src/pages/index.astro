@@ -1,11 +1,164 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import "../styles/tailwind.css";
+const features = [
+  { title: "Gyors CDN", desc: "Astro statikus build villámgyors kiszolgálással." },
+  { title: "Fejleszthető CMS", desc: "Strapi + Postgres + Cloud tároló, tiszta API." },
+  { title: "DX fókusz", desc: "TypeScript, Tailwind, Vite, preview deployok." },
+];
 ---
+<html lang="hu" class="h-full">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>h3250 – Astro + Tailwind</title>
+    <meta name="description" content="Minimal landing Astro + Tailwind mintához." />
+  </head>
+  <body class="min-h-full antialiased bg-white text-slate-800">
+    <!-- Nav -->
+    <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
+      <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
+        <a href="/" class="font-semibold">h3250</a>
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a class="hover:text-emerald-600" href="#features">Funkciók</a>
+          <a class="hover:text-emerald-600" href="#pricing">Árazás</a>
+          <a class="hover:text-emerald-600" href="#contact">Kapcsolat</a>
+        </nav>
+        <a
+          href="#cta"
+          class="inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-white text-sm font-medium hover:bg-emerald-700"
+          >Kezdjük</a
+        >
+      </div>
+    </header>
 
-<Layout>
-	<Welcome />
-</Layout>
+    <!-- Hero -->
+    <section class="relative overflow-hidden">
+      <div class="mx-auto max-w-6xl px-4 py-20 md:py-28">
+        <div class="grid items-center gap-10 md:grid-cols-2">
+          <div>
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
+              Villámgyors oldalak
+              <span class="text-emerald-600">Astro + Strapi</span> stackkel
+            </h1>
+            <p class="mt-4 text-lg text-slate-600">
+              Statikus frontend CDN-en, rugalmas headless CMS. Egyszerű üzemeltetés,
+              kiváló SEO és teljesítmény.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#cta"
+                class="inline-flex items-center rounded-md bg-emerald-600 px-5 py-3 text-white font-medium hover:bg-emerald-700"
+                >Ingyenes kezdés</a
+              >
+              <a
+                href="#features"
+                class="inline-flex items-center rounded-md border px-5 py-3 font-medium hover:bg-slate-50"
+                >Tudj meg többet</a
+              >
+            </div>
+            <div class="mt-6 text-xs text-slate-500">
+              Deploy Vercelen • CMS külön hoszton • Webhookos rebuild
+            </div>
+          </div>
+          <div class="relative">
+            <div
+              class="aspect-video w-full rounded-xl border bg-gradient-to-br from-emerald-50 to-sky-50 p-4"
+            >
+              <div
+                class="h-full w-full rounded-lg border border-dashed grid place-items-center text-slate-500"
+              >
+                Demo kép / illusztráció helye
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="border-t bg-slate-50">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <h2 class="text-2xl md:text-3xl font-bold">Miért ez a stack?</h2>
+        <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {features.map((f) => (
+            <div class="rounded-lg border bg-white p-6">
+              <h3 class="font-semibold">{f.title}</h3>
+              <p class="mt-2 text-slate-600 text-sm">{f.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing placeholder -->
+    <section id="pricing" class="border-t">
+      <div class="mx-auto max-w-6xl px-4 py-16">
+        <h2 class="text-2xl md:text-3xl font-bold">Egyszerű indulás</h2>
+        <div class="mt-8 grid gap-6 md:grid-cols-3">
+          <div class="rounded-xl border p-6">
+            <div class="text-sm font-semibold text-emerald-600">Starter</div>
+            <div class="mt-2 text-3xl font-bold">0 €</div>
+            <ul class="mt-4 space-y-2 text-sm text-slate-600">
+              <li>Vercel free tier</li>
+              <li>Render free tier Strapihoz</li>
+              <li>Cloudflare DNS</li>
+            </ul>
+            <a href="#cta" class="mt-6 inline-block rounded-md bg-emerald-600 px-4 py-2 text-white"
+              >Kezdés</a
+            >
+          </div>
+          <div class="rounded-xl border p-6">
+            <div class="text-sm font-semibold text-emerald-600">Pro</div>
+            <div class="mt-2 text-3xl font-bold">19 €</div>
+            <ul class="mt-4 space-y-2 text-sm text-slate-600">
+              <li>Menedzselt Postgres</li>
+              <li>Cloudinary képek</li>
+              <li>Webhookos build</li>
+            </ul>
+            <a href="#cta" class="mt-6 inline-block rounded-md bg-emerald-600 px-4 py-2 text-white"
+              >Választom</a
+            >
+          </div>
+          <div class="rounded-xl border p-6">
+            <div class="text-sm font-semibold text-emerald-600">Enterprise</div>
+            <div class="mt-2 text-3xl font-bold">Egyedi</div>
+            <ul class="mt-4 space-y-2 text-sm text-slate-600">
+              <li>SLA, staging</li>
+              <li>CI/CD, monitoring</li>
+              <li>RBAC, audit</li>
+            </ul>
+            <a href="#contact" class="mt-6 inline-block rounded-md border px-4 py-2"
+              >Kapcsolat</a
+            >
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section id="cta" class="border-t bg-emerald-600 text-white">
+      <div class="mx-auto max-w-6xl px-4 py-16 text-center">
+        <h2 class="text-3xl font-bold">Indítsd el még ma</h2>
+        <p class="mt-2 text-emerald-100">
+          Astro a Vercelen, Strapi külön hoszton – gyors, biztonságos, skálázható.
+        </p>
+        <a
+          href="#contact"
+          class="mt-6 inline-flex items-center rounded-md bg-white/10 px-6 py-3 font-medium hover:bg-white/20"
+          >Lépjünk tovább</a
+        >
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t">
+      <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-500 flex justify-between">
+        <span>© {new Date().getFullYear()} h3250</span>
+        <div class="space-x-4">
+          <a class="hover:text-slate-700" href="#privacy">Adatvédelem</a>
+          <a class="hover:text-slate-700" href="#terms">Felhasználási feltételek</a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
