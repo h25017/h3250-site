@@ -12,63 +12,370 @@ const features = [
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>h3250 – Astro + Tailwind</title>
     <meta name="description" content="Minimal landing Astro + Tailwind mintához." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --color-primary: #FF6B35;
+        --color-secondary: #1A1A2E;
+        --color-accent: #D84315;
+        --color-bg: #FAF7F2;
+        --color-surface: #FFFFFF;
+        --color-text: #1A1A2E;
+        --color-text-muted: rgba(26, 26, 46, 0.6);
+        --color-on-secondary: #FFFFFF;
+        --font-display: 'Syne', sans-serif;
+        --font-body: 'Manrope', sans-serif;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :root:not(.light) {
+          --color-primary: #FF8A5B;
+          --color-secondary: #FAF7F2;
+          --color-accent: #FF6B35;
+          --color-bg: #0F0F1E;
+          --color-surface: #1A1A2E;
+          --color-text: #FAF7F2;
+          --color-text-muted: rgba(250, 247, 242, 0.6);
+          --color-on-secondary: #0F0F1E;
+        }
+      }
+
+      :root.dark {
+        --color-primary: #FF8A5B;
+        --color-secondary: #FAF7F2;
+        --color-accent: #FF6B35;
+        --color-bg: #0F0F1E;
+        --color-surface: #1A1A2E;
+        --color-text: #FAF7F2;
+        --color-text-muted: rgba(250, 247, 242, 0.6);
+        --color-on-secondary: #0F0F1E;
+      }
+
+      :root.light {
+        --color-primary: #FF6B35;
+        --color-secondary: #1A1A2E;
+        --color-accent: #D84315;
+        --color-bg: #FAF7F2;
+        --color-surface: #FFFFFF;
+        --color-text: #1A1A2E;
+        --color-text-muted: rgba(26, 26, 46, 0.6);
+        --color-on-secondary: #FFFFFF;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes float {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        25% { transform: translate(10px, -10px) rotate(3deg); }
+        50% { transform: translate(-5px, -20px) rotate(-2deg); }
+        75% { transform: translate(-10px, -5px) rotate(2deg); }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+
+      .animate-fade-in-up {
+        animation: fadeInUp 0.8s ease-out forwards;
+        opacity: 0;
+      }
+
+      .animation-delay-200 { animation-delay: 0.2s; }
+      .animation-delay-400 { animation-delay: 0.4s; }
+      .animation-delay-600 { animation-delay: 0.6s; }
+
+      .bg-noise {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      }
+
+      .geometric-shape {
+        position: absolute;
+        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .hover-lift {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .hover-lift:hover {
+        transform: translateY(-8px) rotate(-1deg);
+        box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+      }
+
+      .theme-toggle {
+        width: 44px;
+        height: 44px;
+        border: 3px solid var(--color-primary);
+        background: transparent;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .theme-toggle:hover {
+        background: var(--color-primary);
+        transform: rotate(180deg);
+      }
+
+      .theme-toggle::before {
+        content: '';
+        position: absolute;
+        width: 50%;
+        height: 100%;
+        left: 0;
+        background: var(--color-primary);
+        transition: all 0.3s ease;
+      }
+
+      :root.dark .theme-toggle::before {
+        left: 50%;
+      }
+
+      .mobile-menu-panel {
+        background-color: var(--color-bg) !important;
+        top: 100%;
+        transform-origin: top center;
+      }
+
+      .mobile-menu-inner {
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        background-color: var(--color-bg);
+      }
+    </style>
+    <script>
+      // Dark mode toggle
+      const toggleTheme = () => {
+        const html = document.documentElement;
+        const isDark = html.classList.contains('dark');
+
+        if (isDark) {
+          html.classList.remove('dark');
+          html.classList.add('light');
+          localStorage.setItem('theme', 'light');
+        } else {
+          html.classList.remove('light');
+          html.classList.add('dark');
+          localStorage.setItem('theme', 'dark');
+        }
+      };
+
+      // Initialize theme from localStorage or system preference
+      const initTheme = () => {
+        const savedTheme = localStorage.getItem('theme');
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const html = document.documentElement;
+
+        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+          html.classList.add('dark');
+          html.classList.remove('light');
+        } else if (savedTheme === 'light') {
+          html.classList.add('light');
+          html.classList.remove('dark');
+        }
+      };
+
+      // Run on page load
+      initTheme();
+
+      // Listen for theme toggle clicks
+      document.addEventListener('DOMContentLoaded', () => {
+        const toggleBtn = document.getElementById('theme-toggle');
+        if (toggleBtn) {
+          toggleBtn.addEventListener('click', toggleTheme);
+        }
+      });
+    </script>
+    <script>
+      import Alpine from 'alpinejs';
+      window.Alpine = Alpine;
+      Alpine.start();
+    </script>
   </head>
-  <body class="min-h-full antialiased bg-white text-slate-800">
+  <body class="min-h-full antialiased bg-(--color-bg) text-(--color-text) bg-noise" style="font-family: var(--font-body);">
     <!-- Nav -->
-    <header class="sticky top-0 z-10 bg-white/80 backdrop-blur border-b">
-      <div class="mx-auto max-w-6xl px-4 py-3 flex items-center justify-between">
-        <a href="/" class="font-semibold">h3250</a>
-        <nav class="hidden md:flex items-center gap-6 text-sm">
-          <a class="hover:text-emerald-600" href="#features">Funkciók</a>
-          <a class="hover:text-emerald-600" href="#pricing">Árazás</a>
-          <a class="hover:text-emerald-600" href="#contact">Kapcsolat</a>
+    <header class="sticky top-0 z-50 bg-(--color-surface)/90 backdrop-blur-lg border-b-4 border-(--color-primary)" x-data="{ mobileMenuOpen: false }" style="isolation: isolate;">
+      <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
+        <a href="/" class="text-2xl font-bold tracking-tight" style="font-family: var(--font-display);">
+          <span class="text-(--color-primary)">h3</span><span class="text-(--color-secondary)">250</span>
+        </a>
+
+        <!-- Desktop Nav -->
+        <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
+          <a class="hover:text-(--color-primary) transition-colors" href="#features">Funkciók</a>
+          <a class="hover:text-(--color-primary) transition-colors" href="#pricing">Árazás</a>
+          <a class="hover:text-(--color-primary) transition-colors" href="#contact">Kapcsolat</a>
         </nav>
-        <a
-          href="#cta"
-          class="inline-flex items-center rounded-md bg-emerald-600 px-3 py-1.5 text-white text-sm font-medium hover:bg-emerald-700"
-          >Kezdjük</a
-        >
+
+        <div class="flex items-center gap-4">
+          <button
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Toggle dark mode"
+            title="Toggle dark mode"
+          ></button>
+
+          <!-- Desktop CTA -->
+          <a
+            href="#cta"
+            class="hidden md:inline-flex items-center px-6 py-2.5 text-white text-sm font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all hover:scale-105"
+            style="clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);"
+            >Kezdjük</a
+          >
+
+          <!-- Mobile Menu Button -->
+          <button
+            @click="mobileMenuOpen = !mobileMenuOpen"
+            class="md:hidden w-11 h-11 border-4 border-(--color-secondary) bg-(--color-surface) flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-(--color-primary) hover:border-(--color-primary) group"
+            aria-label="Toggle mobile menu"
+          >
+            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ 'rotate-45 translate-y-2': mobileMenuOpen }"></span>
+            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ 'opacity-0': mobileMenuOpen }"></span>
+            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ '-rotate-45 -translate-y-2': mobileMenuOpen }"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Panel -->
+      <div
+        x-show="mobileMenuOpen"
+        x-transition:enter="transition ease-out duration-300"
+        x-transition:enter-start="opacity-0 scale-y-95"
+        x-transition:enter-end="opacity-100 scale-y-100"
+        x-transition:leave="transition ease-in duration-200"
+        x-transition:leave-start="opacity-100 scale-y-100"
+        x-transition:leave-end="opacity-0 scale-y-95"
+        @click.away="mobileMenuOpen = false"
+        class="md:hidden absolute left-0 right-0 mobile-menu-panel"
+        style="z-index: 100;"
+      >
+        <div class="border-t-4 border-(--color-primary) mobile-menu-inner">
+          <nav class="flex flex-col p-8">
+          <div class="space-y-2">
+            <a
+              href="#features"
+              @click="mobileMenuOpen = false"
+              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
+              style="font-family: var(--font-display);"
+            >
+              Funkciók
+            </a>
+            <a
+              href="#pricing"
+              @click="mobileMenuOpen = false"
+              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
+              style="font-family: var(--font-display);"
+            >
+              Árazás
+            </a>
+            <a
+              href="#contact"
+              @click="mobileMenuOpen = false"
+              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
+              style="font-family: var(--font-display);"
+            >
+              Kapcsolat
+            </a>
+          </div>
+
+          <!-- Mobile CTA -->
+          <a
+            href="#cta"
+            @click="mobileMenuOpen = false"
+            class="block text-center py-6 text-white text-xl font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all border-4 border-(--color-secondary) mt-8"
+            style="font-family: var(--font-display);"
+          >
+            Kezdjük →
+          </a>
+          </nav>
+        </div>
       </div>
     </header>
 
     <!-- Hero -->
-    <section class="relative overflow-hidden">
-      <div class="mx-auto max-w-6xl px-4 py-20 md:py-28">
-        <div class="grid items-center gap-10 md:grid-cols-2">
+    <section class="relative overflow-hidden py-24 md:py-32">
+      <!-- Geometric Background Shapes -->
+      <div class="geometric-shape w-96 h-96 bg-(--color-primary) opacity-10 top-10 -right-20"></div>
+      <div class="geometric-shape w-64 h-64 bg-(--color-accent) opacity-5 bottom-20 -left-10" style="animation-delay: 5s;"></div>
+
+      <div class="mx-auto max-w-7xl px-6 relative z-10">
+        <div class="grid items-center gap-16 lg:grid-cols-2">
           <div>
-            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight">
-              Villámgyors oldalak
-              <span class="text-emerald-600">Astro + Strapi</span> stackkel
-            </h1>
-            <p class="mt-4 text-lg text-slate-600">
-              Statikus frontend CDN-en, rugalmas headless CMS. Egyszerű üzemeltetés,
-              kiváló SEO és teljesítmény.
+            <div class="animate-fade-in-up">
+              <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-none" style="font-family: var(--font-display);">
+                Villám<span class="bg-(--color-primary) text-white px-3 -mx-1 inline-block transform -rotate-1">gyors</span>
+                <br/>
+                <span class="relative inline-block mt-2">
+                  oldalak
+                  <svg class="absolute -bottom-2 left-0 w-full h-4" viewBox="0 0 200 10" preserveAspectRatio="none">
+                    <path d="M0,5 Q50,0 100,5 T200,5" stroke="var(--color-primary)" stroke-width="3" fill="none" />
+                  </svg>
+                </span>
+              </h1>
+            </div>
+
+            <p class="mt-8 text-xl md:text-2xl font-medium leading-relaxed animate-fade-in-up animation-delay-200" style="font-family: var(--font-body);">
+              Astro + Strapi stackkel.
+              <br/>
+              <span class="text-(--color-primary) font-bold">Statikus frontend CDN-en</span>,
+              rugalmas headless CMS.
             </p>
-            <div class="mt-8 flex flex-wrap gap-3">
+
+            <div class="mt-10 flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
               <a
                 href="#cta"
-                class="inline-flex items-center rounded-md bg-emerald-600 px-5 py-3 text-white font-medium hover:bg-emerald-700"
-                >Ingyenes kezdés</a
+                class="inline-flex items-center px-8 py-4 text-white text-lg font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all hover:scale-105 hover:-rotate-1 shadow-lg"
+                >Ingyenes kezdés →</a
               >
               <a
                 href="#features"
-                class="inline-flex items-center rounded-md border px-5 py-3 font-medium hover:bg-slate-50"
+                class="inline-flex items-center px-8 py-4 border-4 border-(--color-secondary) text-lg font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105 hover:rotate-1"
                 >Tudj meg többet</a
               >
             </div>
-            <div class="mt-6 text-xs text-slate-500">
-              Deploy Vercelen • CMS külön hoszton • Webhookos rebuild
+
+            <div class="mt-8 flex gap-8 text-sm font-medium uppercase tracking-wider animate-fade-in-up animation-delay-600">
+              <div>
+                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">99.9%</div>
+                <div style="color: var(--color-text-muted);">Uptime</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">&lt;1s</div>
+                <div style="color: var(--color-text-muted);">Load Time</div>
+              </div>
+              <div>
+                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">CDN</div>
+                <div style="color: var(--color-text-muted);">Global</div>
+              </div>
             </div>
           </div>
-          <div class="relative">
-            <div
-              class="aspect-video w-full rounded-xl border bg-gradient-to-br from-emerald-50 to-sky-50 p-4"
-            >
-              <div
-                class="h-full w-full rounded-lg border border-dashed grid place-items-center text-slate-500"
-              >
-                Demo kép / illusztráció helye
-              </div>
+
+          <div class="relative lg:h-150 animate-fade-in-up animation-delay-400">
+            <!-- Modern abstract visual -->
+            <div class="absolute inset-0 bg-linear-to-br from-(--color-primary) to-(--color-accent) opacity-90 transform -rotate-3"></div>
+            <div class="absolute inset-0 grid grid-cols-3 gap-4 p-8 transform rotate-1">
+              <div class="bg-white/20 backdrop-blur-sm h-32"></div>
+              <div class="bg-white/30 backdrop-blur-sm h-40 mt-8"></div>
+              <div class="bg-white/20 backdrop-blur-sm h-36 mt-4"></div>
+              <div class="bg-white/30 backdrop-blur-sm h-44"></div>
+              <div class="bg-white/40 backdrop-blur-sm h-32 mt-12"></div>
+              <div class="bg-white/25 backdrop-blur-sm h-40 mt-6"></div>
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center">
+              <div class="text-9xl font-black opacity-20" style="font-family: var(--font-display);">A+S</div>
             </div>
           </div>
         </div>
@@ -76,14 +383,28 @@ const features = [
     </section>
 
     <!-- Features -->
-    <section id="features" class="border-t bg-slate-50">
-      <div class="mx-auto max-w-6xl px-4 py-16">
-        <h2 class="text-2xl md:text-3xl font-bold">Miért ez a stack?</h2>
-        <div class="mt-8 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {features.map((f) => (
-            <div class="rounded-lg border bg-white p-6">
-              <h3 class="font-semibold">{f.title}</h3>
-              <p class="mt-2 text-slate-600 text-sm">{f.desc}</p>
+    <section id="features" class="relative border-t-4 border-(--color-primary) bg-(--color-surface) py-24">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-5xl md:text-6xl font-extrabold tracking-tight" style="font-family: var(--font-display);">
+            Miért ez a <span class="text-(--color-primary)">stack?</span>
+          </h2>
+          <div class="mt-4 w-24 h-2 bg-(--color-primary) mx-auto"></div>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          {features.map((f, index) => (
+            <div class="group hover-lift bg-(--color-bg) border-4 border-(--color-secondary) p-8 relative overflow-hidden">
+              <div class="absolute top-0 right-0 text-9xl font-black text-(--color-primary) opacity-5 -mr-4 -mt-8" style="font-family: var(--font-display);">
+                {index + 1}
+              </div>
+              <h3 class="text-2xl font-bold uppercase tracking-wide mb-4 relative z-10" style="font-family: var(--font-display);">
+                {f.title}
+              </h3>
+              <p class="text-lg leading-relaxed relative z-10 font-medium">
+                {f.desc}
+              </p>
+              <div class="mt-6 w-12 h-1 bg-(--color-primary) group-hover:w-full transition-all duration-500"></div>
             </div>
           ))}
         </div>
@@ -91,43 +412,86 @@ const features = [
     </section>
 
     <!-- Pricing placeholder -->
-    <section id="pricing" class="border-t">
-      <div class="mx-auto max-w-6xl px-4 py-16">
-        <h2 class="text-2xl md:text-3xl font-bold">Egyszerű indulás</h2>
-        <div class="mt-8 grid gap-6 md:grid-cols-3">
-          <div class="rounded-xl border p-6">
-            <div class="text-sm font-semibold text-emerald-600">Starter</div>
-            <div class="mt-2 text-3xl font-bold">0 €</div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600">
-              <li>Vercel free tier</li>
-              <li>Render free tier Strapihoz</li>
-              <li>Cloudflare DNS</li>
+    <section id="pricing" class="border-t-4 border-(--color-secondary) bg-(--color-bg) py-24">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="text-center mb-16">
+          <h2 class="text-5xl md:text-6xl font-extrabold tracking-tight" style="font-family: var(--font-display);">
+            Egyszerű <span class="text-(--color-primary)">indulás</span>
+          </h2>
+        </div>
+
+        <div class="grid gap-8 md:grid-cols-3">
+          <div class="bg-(--color-surface) border-4 border-(--color-secondary) p-8 hover-lift">
+            <div class="text-sm font-bold uppercase tracking-widest text-(--color-primary) mb-4">Starter</div>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-6xl font-black" style="font-family: var(--font-display);">0</span>
+              <span class="text-2xl font-bold">€</span>
+            </div>
+            <ul class="space-y-3 mb-8 text-base font-medium">
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>Vercel free tier</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>Render free tier Strapihoz</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>Cloudflare DNS</span>
+              </li>
             </ul>
-            <a href="#cta" class="mt-6 inline-block rounded-md bg-emerald-600 px-4 py-2 text-white"
+            <a href="#cta" class="block w-full text-center py-4 bg-(--color-secondary) text-(--color-on-secondary) font-bold uppercase tracking-wider hover:bg-(--color-primary) hover:text-white transition-all hover:scale-105"
               >Kezdés</a
             >
           </div>
-          <div class="rounded-xl border p-6">
-            <div class="text-sm font-semibold text-emerald-600">Pro</div>
-            <div class="mt-2 text-3xl font-bold">19 €</div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600">
-              <li>Menedzselt Postgres</li>
-              <li>Cloudinary képek</li>
-              <li>Webhookos build</li>
+
+          <div class="bg-(--color-primary) text-white border-4 border-(--color-accent) p-8 hover-lift relative overflow-hidden transform scale-105">
+            <div class="absolute top-4 right-4 bg-white text-(--color-primary) px-3 py-1 text-xs font-bold uppercase tracking-wider">Népszerű</div>
+            <div class="text-sm font-bold uppercase tracking-widest mb-4">Pro</div>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-6xl font-black" style="font-family: var(--font-display);">19</span>
+              <span class="text-2xl font-bold">€</span>
+            </div>
+            <ul class="space-y-3 mb-8 text-base font-medium">
+              <li class="flex items-start gap-2">
+                <span class="font-bold">✓</span>
+                <span>Menedzselt Postgres</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold">✓</span>
+                <span>Cloudinary képek</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="font-bold">✓</span>
+                <span>Webhookos build</span>
+              </li>
             </ul>
-            <a href="#cta" class="mt-6 inline-block rounded-md bg-emerald-600 px-4 py-2 text-white"
+            <a href="#cta" class="block w-full text-center py-4 bg-white text-(--color-primary) font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105"
               >Választom</a
             >
           </div>
-          <div class="rounded-xl border p-6">
-            <div class="text-sm font-semibold text-emerald-600">Enterprise</div>
-            <div class="mt-2 text-3xl font-bold">Egyedi</div>
-            <ul class="mt-4 space-y-2 text-sm text-slate-600">
-              <li>SLA, staging</li>
-              <li>CI/CD, monitoring</li>
-              <li>RBAC, audit</li>
+
+          <div class="bg-(--color-surface) border-4 border-(--color-secondary) p-8 hover-lift">
+            <div class="text-sm font-bold uppercase tracking-widest text-(--color-primary) mb-4">Enterprise</div>
+            <div class="flex items-baseline gap-2 mb-6">
+              <span class="text-4xl font-black" style="font-family: var(--font-display);">Egyedi</span>
+            </div>
+            <ul class="space-y-3 mb-8 text-base font-medium">
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>SLA, staging</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>CI/CD, monitoring</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-(--color-primary) font-bold">✓</span>
+                <span>RBAC, audit</span>
+              </li>
             </ul>
-            <a href="#contact" class="mt-6 inline-block rounded-md border px-4 py-2"
+            <a href="#contact" class="block w-full text-center py-4 border-4 border-(--color-secondary) text-(--color-secondary) font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105"
               >Kapcsolat</a
             >
           </div>
@@ -136,27 +500,83 @@ const features = [
     </section>
 
     <!-- CTA -->
-    <section id="cta" class="border-t bg-emerald-600 text-white">
-      <div class="mx-auto max-w-6xl px-4 py-16 text-center">
-        <h2 class="text-3xl font-bold">Indítsd el még ma</h2>
-        <p class="mt-2 text-emerald-100">
-          Astro a Vercelen, Strapi külön hoszton – gyors, biztonságos, skálázható.
+    <section id="cta" class="relative border-t-4 border-(--color-secondary) bg-(--color-primary) text-white py-24 overflow-hidden">
+      <!-- Diagonal background accent -->
+      <div class="absolute inset-0 bg-(--color-accent) opacity-20 transform -skew-y-3"></div>
+
+      <div class="mx-auto max-w-4xl px-6 text-center relative z-10">
+        <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6" style="font-family: var(--font-display);">
+          Indítsd el<br/>
+          <span class="text-(--color-secondary)">még ma</span>
+        </h2>
+        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-10">
+          Astro a Vercelen, Strapi külön hoszton –<br/>
+          <span class="font-bold">gyors, biztonságos, skálázható.</span>
         </p>
         <a
           href="#contact"
-          class="mt-6 inline-flex items-center rounded-md bg-white/10 px-6 py-3 font-medium hover:bg-white/20"
-          >Lépjünk tovább</a
+          class="inline-flex items-center px-12 py-5 bg-white text-(--color-primary) text-lg font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-110 shadow-2xl"
+          >Lépjünk tovább →</a
         >
+
+        <div class="mt-16 grid grid-cols-3 gap-12 text-center">
+          <!-- Skálázás Icon -->
+          <div>
+            <div class="flex justify-center mb-4">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="10" y="10" width="20" height="20" fill="white" stroke="white" stroke-width="4"/>
+                <rect x="30" y="30" width="20" height="20" fill="none" stroke="white" stroke-width="4"/>
+                <rect x="50" y="50" width="20" height="20" fill="none" stroke="white" stroke-width="4"/>
+                <line x1="20" y1="30" x2="40" y2="40" stroke="white" stroke-width="3"/>
+                <line x1="40" y1="50" x2="60" y2="60" stroke="white" stroke-width="3"/>
+              </svg>
+            </div>
+            <div class="text-sm font-bold uppercase tracking-widest">Skálázás</div>
+          </div>
+
+          <!-- Sebesség Icon -->
+          <div>
+            <div class="flex justify-center mb-4">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="15,40 35,20 35,35 65,35 65,45 35,45 35,60" fill="white"/>
+                <rect x="50" y="25" width="4" height="30" fill="white"/>
+                <rect x="58" y="30" width="4" height="20" fill="white"/>
+              </svg>
+            </div>
+            <div class="text-sm font-bold uppercase tracking-widest">Sebesség</div>
+          </div>
+
+          <!-- Biztonság Icon -->
+          <div>
+            <div class="flex justify-center mb-4">
+              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="25" y="35" width="30" height="30" fill="none" stroke="white" stroke-width="4"/>
+                <circle cx="40" cy="30" r="10" fill="none" stroke="white" stroke-width="4"/>
+                <rect x="38" y="48" width="4" height="8" fill="white"/>
+                <circle cx="40" cy="43" r="3" fill="white"/>
+              </svg>
+            </div>
+            <div class="text-sm font-bold uppercase tracking-widest">Biztonság</div>
+          </div>
+        </div>
       </div>
     </section>
 
     <!-- Footer -->
-    <footer class="border-t">
-      <div class="mx-auto max-w-6xl px-4 py-8 text-sm text-slate-500 flex justify-between">
-        <span>© {new Date().getFullYear()} h3250</span>
-        <div class="space-x-4">
-          <a class="hover:text-slate-700" href="#privacy">Adatvédelem</a>
-          <a class="hover:text-slate-700" href="#terms">Felhasználási feltételek</a>
+    <footer class="border-t-4 border-(--color-secondary) bg-(--color-surface) py-12">
+      <div class="mx-auto max-w-7xl px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          <div class="text-2xl font-bold" style="font-family: var(--font-display);">
+            <span class="text-(--color-primary)">h32</span><span class="text-(--color-secondary)">50</span>
+          </div>
+          <div class="flex gap-8 text-sm font-medium uppercase tracking-wider">
+            <a class="hover:text-(--color-primary) transition-colors" href="#privacy">Adatvédelem</a>
+            <a class="hover:text-(--color-primary) transition-colors" href="#terms">Feltételek</a>
+            <a class="hover:text-(--color-primary) transition-colors" href="#contact">Kapcsolat</a>
+          </div>
+        </div>
+        <div class="mt-8 text-center text-sm font-medium" style="color: var(--color-text-muted);">
+          © {new Date().getFullYear()} h3250 — Built with Astro + Strapi
         </div>
       </div>
     </footer>
