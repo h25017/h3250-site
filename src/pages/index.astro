@@ -1,73 +1,73 @@
 ---
 import "../styles/tailwind.css";
-const features = [
-  { title: "Gyors CDN", desc: "Astro statikus build villámgyors kiszolgálással." },
-  { title: "Fejleszthető CMS", desc: "Strapi + Postgres + Cloud tároló, tiszta API." },
-  { title: "DX fókusz", desc: "TypeScript, Tailwind, Vite, preview deployok." },
-];
+import FileUploader from "../components/FileUploader"
+
+
 ---
 <html lang="hu" class="h-full">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>h3250 – Astro + Tailwind</title>
-    <meta name="description" content="Minimal landing Astro + Tailwind mintához." />
+    <title>WordPress vs Astro+Strapi – A jövő már itt van</title>
+    <meta name="description" content="Miért váltanak a modern csapatok WordPressről Astro+Strapi stackre? Teljesítmény, biztonság, fejlesztői élmény – részletes összehasonlítás." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
       :root {
-        --color-primary: #FF6B35;
-        --color-secondary: #1A1A2E;
-        --color-accent: #D84315;
-        --color-bg: #FAF7F2;
+        --color-primary: #6366F1;
+        --color-accent: #10B981;
+        --color-danger: #EF4444;
+        --color-bg: #FAFAFA;
         --color-surface: #FFFFFF;
-        --color-text: #1A1A2E;
-        --color-text-muted: rgba(26, 26, 46, 0.6);
-        --color-on-secondary: #FFFFFF;
-        --font-display: 'Syne', sans-serif;
-        --font-body: 'Manrope', sans-serif;
+        --color-text: #0F172A;
+        --color-text-muted: #64748B;
+        --color-border: #E2E8F0;
+        --font-display: 'Outfit', sans-serif;
+        --font-body: 'DM Sans', sans-serif;
+        --radius: 16px;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+
+      :root.dark {
+        --color-primary: #818CF8;
+        --color-accent: #34D399;
+        --color-danger: #F87171;
+        --color-bg: #0F172A;
+        --color-surface: #1E293B;
+        --color-text: #F1F5F9;
+        --color-text-muted: #94A3B8;
+        --color-border: #334155;
+        --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
       }
 
       @media (prefers-color-scheme: dark) {
         :root:not(.light) {
-          --color-primary: #FF8A5B;
-          --color-secondary: #FAF7F2;
-          --color-accent: #FF6B35;
-          --color-bg: #0F0F1E;
-          --color-surface: #1A1A2E;
-          --color-text: #FAF7F2;
-          --color-text-muted: rgba(250, 247, 242, 0.6);
-          --color-on-secondary: #0F0F1E;
+          --color-primary: #818CF8;
+          --color-accent: #34D399;
+          --color-danger: #F87171;
+          --color-bg: #0F172A;
+          --color-surface: #1E293B;
+          --color-text: #F1F5F9;
+          --color-text-muted: #94A3B8;
+          --color-border: #334155;
+          --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+          --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
         }
       }
 
-      :root.dark {
-        --color-primary: #FF8A5B;
-        --color-secondary: #FAF7F2;
-        --color-accent: #FF6B35;
-        --color-bg: #0F0F1E;
-        --color-surface: #1A1A2E;
-        --color-text: #FAF7F2;
-        --color-text-muted: rgba(250, 247, 242, 0.6);
-        --color-on-secondary: #0F0F1E;
+      /* Smooth transitions for theme changes */
+      * {
+        transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
       }
 
-      :root.light {
-        --color-primary: #FF6B35;
-        --color-secondary: #1A1A2E;
-        --color-accent: #D84315;
-        --color-bg: #FAF7F2;
-        --color-surface: #FFFFFF;
-        --color-text: #1A1A2E;
-        --color-text-muted: rgba(26, 26, 46, 0.6);
-        --color-on-secondary: #FFFFFF;
-      }
-
+      /* Micro-interactions */
       @keyframes fadeInUp {
         from {
           opacity: 0;
-          transform: translateY(30px);
+          transform: translateY(20px);
         }
         to {
           opacity: 1;
@@ -75,89 +75,237 @@ const features = [
         }
       }
 
-      @keyframes float {
-        0%, 100% { transform: translate(0, 0) rotate(0deg); }
-        25% { transform: translate(10px, -10px) rotate(3deg); }
-        50% { transform: translate(-5px, -20px) rotate(-2deg); }
-        75% { transform: translate(-10px, -5px) rotate(2deg); }
+      @keyframes scaleIn {
+        from {
+          opacity: 0;
+          transform: scale(0.98) translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
       }
 
-      @keyframes pulse {
-        0%, 100% { opacity: 0.6; }
-        50% { opacity: 1; }
+      @keyframes shimmer {
+        0% {
+          background-position: -1000px 0;
+        }
+        100% {
+          background-position: 1000px 0;
+        }
       }
 
       .animate-fade-in-up {
-        animation: fadeInUp 0.8s ease-out forwards;
-        opacity: 0;
+        animation: fadeInUp 0.6s ease-out forwards;
       }
 
-      .animation-delay-200 { animation-delay: 0.2s; }
-      .animation-delay-400 { animation-delay: 0.4s; }
-      .animation-delay-600 { animation-delay: 0.6s; }
-
-      .bg-noise {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+      .animate-scale-in {
+        animation: scaleIn 0.5s ease-out forwards;
       }
 
-      .geometric-shape {
-        position: absolute;
-        border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-        animation: float 20s ease-in-out infinite;
+      .delay-100 { animation-delay: 0.1s; opacity: 0; }
+      .delay-200 { animation-delay: 0.2s; opacity: 0; }
+      .delay-300 { animation-delay: 0.3s; opacity: 0; }
+      .delay-400 { animation-delay: 0.4s; opacity: 0; }
+      .delay-500 { animation-delay: 0.5s; opacity: 0; }
+      .delay-600 { animation-delay: 0.6s; opacity: 0; }
+
+      /* Bento card hover effects */
+      .bento-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
 
-      .hover-lift {
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      .bento-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
       }
 
-      .hover-lift:hover {
-        transform: translateY(-8px) rotate(-1deg);
-        box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+      .bento-card:hover .card-icon {
+        transform: scale(1.05);
       }
 
-      .theme-toggle {
-        width: 44px;
-        height: 44px;
-        border: 3px solid var(--color-primary);
-        background: transparent;
-        cursor: pointer;
+      .card-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      /* Button hover effects */
+      .btn-primary {
         position: relative;
         overflow: hidden;
-        transition: all 0.3s ease;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .btn-primary::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+        transition: left 0.6s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.3);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .btn-secondary {
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .btn-secondary:hover {
+        transform: translateY(-2px);
+        background-color: var(--color-secondary);
+        color: var(--color-on-secondary);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-secondary:active {
+        transform: translateY(0);
+      }
+
+      /* Dark mode toggle */
+      .theme-toggle {
+        width: 56px;
+        height: 28px;
+        border-radius: 14px;
+        background: var(--color-border);
+        position: relative;
+        cursor: pointer;
+        transition: background 0.3s;
       }
 
       .theme-toggle:hover {
         background: var(--color-primary);
-        transform: rotate(180deg);
       }
 
-      .theme-toggle::before {
+      .theme-toggle::after {
+        content: '🌙';
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: var(--color-surface);
+        top: 2px;
+        left: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow);
+      }
+
+      :root.dark .theme-toggle::after {
+        left: 30px;
+        content: '☀️';
+      }
+
+      /* Gradient text */
+      .gradient-text {
+        background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Badge shimmer effect */
+      .badge-shimmer {
+        background: linear-gradient(90deg,
+          var(--color-primary) 0%,
+          var(--color-accent) 50%,
+          var(--color-primary) 100%
+        );
+        background-size: 200% 100%;
+        animation: shimmer 3s infinite;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      /* Navigation link hover */
+      .nav-link {
+        position: relative;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .nav-link::after {
         content: '';
         position: absolute;
-        width: 50%;
-        height: 100%;
-        left: 0;
-        background: var(--color-primary);
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+        transition: width 0.3s ease;
+      }
+
+      .nav-link:hover::after {
+        width: 80%;
+      }
+
+      .nav-link:hover {
+        color: var(--color-primary) !important;
+        transform: translateY(-1px);
+      }
+
+      /* Comparison card interactions */
+      .comparison-card .wp-section {
         transition: all 0.3s ease;
       }
 
-      :root.dark .theme-toggle::before {
-        left: 50%;
+      .comparison-card .astro-section {
+        transition: all 0.3s ease;
       }
 
-      .mobile-menu-panel {
-        background-color: var(--color-bg) !important;
-        top: 100%;
-        transform-origin: top center;
+      .comparison-card:hover .wp-section {
+        transform: translateX(-4px);
+        opacity: 0.8;
       }
 
-      .mobile-menu-inner {
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
-        background-color: var(--color-bg);
+      .comparison-card:hover .astro-section {
+        transform: translateX(4px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      }
+
+      /* Dark mode navigation */
+      :root.dark nav {
+        background: linear-gradient(to bottom, var(--color-surface) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
       }
     </style>
     <script>
       // Dark mode toggle
+      const initTheme = () => {
+        const savedTheme = localStorage.getItem('theme');
+        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const html = document.documentElement;
+
+        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
+          html.classList.add('dark');
+          html.classList.remove('light');
+        } else if (savedTheme === 'light') {
+          html.classList.add('light');
+          html.classList.remove('dark');
+        }
+      };
+
       const toggleTheme = () => {
         const html = document.documentElement;
         const isDark = html.classList.contains('dark');
@@ -173,410 +321,172 @@ const features = [
         }
       };
 
-      // Initialize theme from localStorage or system preference
-      const initTheme = () => {
-        const savedTheme = localStorage.getItem('theme');
-        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        const html = document.documentElement;
-
-        if (savedTheme === 'dark' || (!savedTheme && systemDark)) {
-          html.classList.add('dark');
-          html.classList.remove('light');
-        } else if (savedTheme === 'light') {
-          html.classList.add('light');
-          html.classList.remove('dark');
-        }
-      };
-
-      // Run on page load
+      // Initialize on load
       initTheme();
 
-      // Listen for theme toggle clicks
+      // Attach toggle handler
       document.addEventListener('DOMContentLoaded', () => {
-        const toggleBtn = document.getElementById('theme-toggle');
-        if (toggleBtn) {
-          toggleBtn.addEventListener('click', toggleTheme);
+        const toggle = document.getElementById('theme-toggle');
+        if (toggle) {
+          toggle.addEventListener('click', toggleTheme);
         }
       });
     </script>
     <script>
+      // @ts-ignore
       import Alpine from 'alpinejs';
+      // @ts-ignore
       window.Alpine = Alpine;
       Alpine.start();
     </script>
+    <script>
+      // @ts-ignore
+      import Lenis from 'lenis';
+      import 'lenis/dist/lenis.css';
+
+      // Initialize Lenis smooth scroll
+      // @ts-ignore
+      const lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        orientation: 'vertical',
+        gestureOrientation: 'vertical',
+        smoothWheel: true,
+        wheelMultiplier: 1,
+        touchMultiplier: 2,
+        infinite: false,
+      });
+
+      // Request animation frame loop
+      // @ts-ignore
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+
+      requestAnimationFrame(raf);
+
+      // Anchor link smooth scrolling
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          // @ts-ignore
+          anchor.addEventListener('click', function (e) {
+            // @ts-ignore
+            const href = this.getAttribute('href');
+            if (href && href !== '#') {
+              e.preventDefault();
+              const target = document.querySelector(href);
+              if (target) {
+                lenis.scrollTo(target, {
+                  offset: -80,
+                  duration: 1.5
+                });
+              }
+            }
+          });
+        });
+      });
+    </script>
   </head>
-  <body class="min-h-full antialiased bg-(--color-bg) text-(--color-text) bg-noise" style="font-family: var(--font-body);">
-    <!-- Nav -->
-    <header class="sticky top-0 z-50 bg-(--color-surface)/90 backdrop-blur-lg border-b-4 border-(--color-primary)" x-data="{ mobileMenuOpen: false }" style="isolation: isolate;">
-      <div class="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-        <a href="/" class="text-2xl font-bold tracking-tight" style="font-family: var(--font-display);">
-          <span class="text-(--color-primary)">h3</span><span class="text-(--color-secondary)">250</span>
-        </a>
+  <body class="min-h-full antialiased" style="background-color: var(--color-bg); color: var(--color-text); font-family: var(--font-body);">
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 backdrop-blur-xl" style="background: linear-gradient(to bottom, var(--color-surface) 0%, rgba(255, 255, 255, 0.95) 100%); border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow);" x-data="{ mobileMenuOpen: false }">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <a href="/" class="text-xl font-bold transition-all duration-300 hover:opacity-80" style="font-family: var(--font-display); color: var(--color-text);">
+            <span class="gradient-text">WEBP</span>Konvertáló
+          </a>
 
-        <!-- Desktop Nav -->
-        <nav class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide uppercase">
-          <a class="hover:text-(--color-primary) transition-colors" href="#features">Funkciók</a>
-          <a class="hover:text-(--color-primary) transition-colors" href="#pricing">Árazás</a>
-          <a class="hover:text-(--color-primary) transition-colors" href="#contact">Kapcsolat</a>
-        </nav>
-
-        <div class="flex items-center gap-4">
-          <button
-            id="theme-toggle"
-            class="theme-toggle"
-            aria-label="Toggle dark mode"
-            title="Toggle dark mode"
-          ></button>
-
-          <!-- Desktop CTA -->
-          <a
-            href="#cta"
-            class="hidden md:inline-flex items-center px-6 py-2.5 text-white text-sm font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all hover:scale-105"
-            style="clip-path: polygon(0 0, 100% 0, 95% 100%, 0% 100%);"
-            >Kezdjük</a
-          >
+          <!-- Desktop Nav -->
+          <div class="hidden md:flex items-center gap-6">
+            <a href="#comparison" class="nav-link text-sm font-semibold relative px-3 py-2 rounded-lg" style="color: var(--color-text);">
+              Dokumentum
+            </a>
+          
+            <div id="theme-toggle" class="theme-toggle ml-2"></div>
+          </div>
 
           <!-- Mobile Menu Button -->
           <button
             @click="mobileMenuOpen = !mobileMenuOpen"
-            class="md:hidden w-11 h-11 border-4 border-(--color-secondary) bg-(--color-surface) flex flex-col items-center justify-center gap-1.5 transition-all hover:bg-(--color-primary) hover:border-(--color-primary) group"
-            aria-label="Toggle mobile menu"
+            class="md:hidden flex flex-col gap-1.5 w-10 h-10 items-center justify-center rounded-lg hover:opacity-70 transition-opacity"
+            style="background-color: var(--color-surface);"
           >
-            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ 'rotate-45 translate-y-2': mobileMenuOpen }"></span>
-            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ 'opacity-0': mobileMenuOpen }"></span>
-            <span class="w-6 h-0.5 bg-(--color-secondary) transition-all group-hover:bg-white" :class="{ '-rotate-45 -translate-y-2': mobileMenuOpen }"></span>
+            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'rotate-45 translate-y-2': mobileMenuOpen }"></span>
+            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'opacity-0': mobileMenuOpen }"></span>
+            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ '-rotate-45 -translate-y-2': mobileMenuOpen }"></span>
           </button>
         </div>
       </div>
 
-      <!-- Mobile Menu Panel -->
+      <!-- Mobile Menu -->
       <div
         x-show="mobileMenuOpen"
-        x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="opacity-0 scale-y-95"
-        x-transition:enter-end="opacity-100 scale-y-100"
-        x-transition:leave="transition ease-in duration-200"
-        x-transition:leave-start="opacity-100 scale-y-100"
-        x-transition:leave-end="opacity-0 scale-y-95"
+        x-transition:enter="transition ease-out duration-200"
+        x-transition:enter-start="opacity-0 scale-95"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-95"
         @click.away="mobileMenuOpen = false"
-        class="md:hidden absolute left-0 right-0 mobile-menu-panel"
-        style="z-index: 100;"
+        class="md:hidden absolute left-0 right-0 px-4 pb-4"
+        style="background-color: var(--color-bg); border-bottom: 1px solid var(--color-border); z-index: 100; top: 100%; transform-origin: top center;"
       >
-        <div class="border-t-4 border-(--color-primary) mobile-menu-inner">
-          <nav class="flex flex-col p-8">
-          <div class="space-y-2">
-            <a
-              href="#features"
-              @click="mobileMenuOpen = false"
-              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
-              style="font-family: var(--font-display);"
-            >
-              Funkciók
-            </a>
-            <a
-              href="#pricing"
-              @click="mobileMenuOpen = false"
-              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
-              style="font-family: var(--font-display);"
-            >
-              Árazás
-            </a>
-            <a
-              href="#contact"
-              @click="mobileMenuOpen = false"
-              class="block text-4xl font-extrabold uppercase tracking-tight py-4 border-b-4 border-(--color-secondary) hover:text-(--color-primary) hover:border-(--color-primary) transition-all"
-              style="font-family: var(--font-display);"
-            >
-              Kapcsolat
-            </a>
-          </div>
-
-          <!-- Mobile CTA -->
-          <a
-            href="#cta"
-            @click="mobileMenuOpen = false"
-            class="block text-center py-6 text-white text-xl font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all border-4 border-(--color-secondary) mt-8"
-            style="font-family: var(--font-display);"
-          >
-            Kezdjük →
-          </a>
-          </nav>
+        <div class="flex flex-col gap-2 py-4">
+          <a href="#comparison" @click="mobileMenuOpen = false" class="px-4 py-3 rounded-lg text-sm font-medium transition-colors" style="background-color: var(--color-surface); color: var(--color-text);">Dokumentum</a>
+          
+          
+         
         </div>
       </div>
-    </header>
+    </nav>
 
-    <!-- Hero -->
-    <section class="relative overflow-hidden py-24 md:py-32">
-      <!-- Geometric Background Shapes -->
-      <div class="geometric-shape w-96 h-96 bg-(--color-primary) opacity-10 top-10 -right-20"></div>
-      <div class="geometric-shape w-64 h-64 bg-(--color-accent) opacity-5 bottom-20 -left-10" style="animation-delay: 5s;"></div>
-
-      <div class="mx-auto max-w-7xl px-6 relative z-10">
-        <div class="grid items-center gap-16 lg:grid-cols-2">
-          <div>
-            <div class="animate-fade-in-up">
-              <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tighter leading-none" style="font-family: var(--font-display);">
-                Villám<span class="bg-(--color-primary) text-white px-3 -mx-1 inline-block transform -rotate-1">gyors</span>
-                <br/>
-                <span class="relative inline-block mt-2">
-                  oldalak
-                  <svg class="absolute -bottom-2 left-0 w-full h-4" viewBox="0 0 200 10" preserveAspectRatio="none">
-                    <path d="M0,5 Q50,0 100,5 T200,5" stroke="var(--color-primary)" stroke-width="3" fill="none" />
-                  </svg>
-                </span>
-              </h1>
-            </div>
-
-            <p class="mt-8 text-xl md:text-2xl font-medium leading-relaxed animate-fade-in-up animation-delay-200" style="font-family: var(--font-body);">
-              Astro + Strapi stackkel.
-              <br/>
-              <span class="text-(--color-primary) font-bold">Statikus frontend CDN-en</span>,
-              rugalmas headless CMS.
-            </p>
-
-            <div class="mt-10 flex flex-wrap gap-4 animate-fade-in-up animation-delay-400">
-              <a
-                href="#cta"
-                class="inline-flex items-center px-8 py-4 text-white text-lg font-bold uppercase tracking-wider bg-(--color-primary) hover:bg-(--color-accent) transition-all hover:scale-105 hover:-rotate-1 shadow-lg"
-                >Ingyenes kezdés →</a
-              >
-              <a
-                href="#features"
-                class="inline-flex items-center px-8 py-4 border-4 border-(--color-secondary) text-lg font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105 hover:rotate-1"
-                >Tudj meg többet</a
-              >
-            </div>
-
-            <div class="mt-8 flex gap-8 text-sm font-medium uppercase tracking-wider animate-fade-in-up animation-delay-600">
-              <div>
-                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">99.9%</div>
-                <div style="color: var(--color-text-muted);">Uptime</div>
-              </div>
-              <div>
-                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">&lt;1s</div>
-                <div style="color: var(--color-text-muted);">Load Time</div>
-              </div>
-              <div>
-                <div class="text-3xl font-bold text-(--color-primary)" style="font-family: var(--font-display);">CDN</div>
-                <div style="color: var(--color-text-muted);">Global</div>
-              </div>
-            </div>
+    <!-- Hero Section -->
+    <section class="pt-20 pb-32 px-4 sm:px-6 lg:px-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center max-w-4xl mx-auto">
+          <div class="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-6 animate-fade-in-up" style="background-color: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow);">
+            <span class="badge-shimmer">ImageConverter</span>
           </div>
 
-          <div class="relative lg:h-150 animate-fade-in-up animation-delay-400">
-            <!-- Modern abstract visual -->
-            <div class="absolute inset-0 bg-linear-to-br from-(--color-primary) to-(--color-accent) opacity-90 transform -rotate-3"></div>
-            <div class="absolute inset-0 grid grid-cols-3 gap-4 p-8 transform rotate-1">
-              <div class="bg-white/20 backdrop-blur-sm h-32"></div>
-              <div class="bg-white/30 backdrop-blur-sm h-40 mt-8"></div>
-              <div class="bg-white/20 backdrop-blur-sm h-36 mt-4"></div>
-              <div class="bg-white/30 backdrop-blur-sm h-44"></div>
-              <div class="bg-white/40 backdrop-blur-sm h-32 mt-12"></div>
-              <div class="bg-white/25 backdrop-blur-sm h-40 mt-6"></div>
-            </div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white text-center">
-              <div class="text-9xl font-black opacity-20" style="font-family: var(--font-display);">A+S</div>
-            </div>
+          <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-up delay-100" style="font-family: var(--font-display); color: var(--color-text); line-height: 1.1;">
+            WEBP konvertáló<br/>
+            <span class="gradient-text">Optimalizáló</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl mb-12 animate-fade-in-up delay-200" style="color: var(--color-text-muted);">
+            Méretezés - Kompresszálás - SEO barát file elnevezés<br class="hidden md:block"/>
+           
+          </p>
+
+          <div class="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up delay-300">
+        
+			<FileUploader client:load />
           </div>
+
+     
         </div>
+		
       </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="relative border-t-4 border-(--color-primary) bg-(--color-surface) py-24">
-      <div class="mx-auto max-w-7xl px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-5xl md:text-6xl font-extrabold tracking-tight" style="font-family: var(--font-display);">
-            Miért ez a <span class="text-(--color-primary)">stack?</span>
-          </h2>
-          <div class="mt-4 w-24 h-2 bg-(--color-primary) mx-auto"></div>
-        </div>
-
-        <div class="grid gap-8 md:grid-cols-3">
-          {features.map((f, index) => (
-            <div class="group hover-lift bg-(--color-bg) border-4 border-(--color-secondary) p-8 relative overflow-hidden">
-              <div class="absolute top-0 right-0 text-9xl font-black text-(--color-primary) opacity-5 -mr-4 -mt-8" style="font-family: var(--font-display);">
-                {index + 1}
-              </div>
-              <h3 class="text-2xl font-bold uppercase tracking-wide mb-4 relative z-10" style="font-family: var(--font-display);">
-                {f.title}
-              </h3>
-              <p class="text-lg leading-relaxed relative z-10 font-medium">
-                {f.desc}
-              </p>
-              <div class="mt-6 w-12 h-1 bg-(--color-primary) group-hover:w-full transition-all duration-500"></div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing placeholder -->
-    <section id="pricing" class="border-t-4 border-(--color-secondary) bg-(--color-bg) py-24">
-      <div class="mx-auto max-w-7xl px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-5xl md:text-6xl font-extrabold tracking-tight" style="font-family: var(--font-display);">
-            Egyszerű <span class="text-(--color-primary)">indulás</span>
-          </h2>
-        </div>
-
-        <div class="grid gap-8 md:grid-cols-3">
-          <div class="bg-(--color-surface) border-4 border-(--color-secondary) p-8 hover-lift">
-            <div class="text-sm font-bold uppercase tracking-widest text-(--color-primary) mb-4">Starter</div>
-            <div class="flex items-baseline gap-2 mb-6">
-              <span class="text-6xl font-black" style="font-family: var(--font-display);">0</span>
-              <span class="text-2xl font-bold">€</span>
-            </div>
-            <ul class="space-y-3 mb-8 text-base font-medium">
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>Vercel free tier</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>Render free tier Strapihoz</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>Cloudflare DNS</span>
-              </li>
-            </ul>
-            <a href="#cta" class="block w-full text-center py-4 bg-(--color-secondary) text-(--color-on-secondary) font-bold uppercase tracking-wider hover:bg-(--color-primary) hover:text-white transition-all hover:scale-105"
-              >Kezdés</a
-            >
-          </div>
-
-          <div class="bg-(--color-primary) text-white border-4 border-(--color-accent) p-8 hover-lift relative overflow-hidden transform scale-105">
-            <div class="absolute top-4 right-4 bg-white text-(--color-primary) px-3 py-1 text-xs font-bold uppercase tracking-wider">Népszerű</div>
-            <div class="text-sm font-bold uppercase tracking-widest mb-4">Pro</div>
-            <div class="flex items-baseline gap-2 mb-6">
-              <span class="text-6xl font-black" style="font-family: var(--font-display);">19</span>
-              <span class="text-2xl font-bold">€</span>
-            </div>
-            <ul class="space-y-3 mb-8 text-base font-medium">
-              <li class="flex items-start gap-2">
-                <span class="font-bold">✓</span>
-                <span>Menedzselt Postgres</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="font-bold">✓</span>
-                <span>Cloudinary képek</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="font-bold">✓</span>
-                <span>Webhookos build</span>
-              </li>
-            </ul>
-            <a href="#cta" class="block w-full text-center py-4 bg-white text-(--color-primary) font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105"
-              >Választom</a
-            >
-          </div>
-
-          <div class="bg-(--color-surface) border-4 border-(--color-secondary) p-8 hover-lift">
-            <div class="text-sm font-bold uppercase tracking-widest text-(--color-primary) mb-4">Enterprise</div>
-            <div class="flex items-baseline gap-2 mb-6">
-              <span class="text-4xl font-black" style="font-family: var(--font-display);">Egyedi</span>
-            </div>
-            <ul class="space-y-3 mb-8 text-base font-medium">
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>SLA, staging</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>CI/CD, monitoring</span>
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-(--color-primary) font-bold">✓</span>
-                <span>RBAC, audit</span>
-              </li>
-            </ul>
-            <a href="#contact" class="block w-full text-center py-4 border-4 border-(--color-secondary) text-(--color-secondary) font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-105"
-              >Kapcsolat</a
-            >
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section id="cta" class="relative border-t-4 border-(--color-secondary) bg-(--color-primary) text-white py-24 overflow-hidden">
-      <!-- Diagonal background accent -->
-      <div class="absolute inset-0 bg-(--color-accent) opacity-20 transform -skew-y-3"></div>
-
-      <div class="mx-auto max-w-4xl px-6 text-center relative z-10">
-        <h2 class="text-5xl md:text-7xl font-extrabold tracking-tight mb-6" style="font-family: var(--font-display);">
-          Indítsd el<br/>
-          <span class="text-(--color-secondary)">még ma</span>
-        </h2>
-        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-10">
-          Astro a Vercelen, Strapi külön hoszton –<br/>
-          <span class="font-bold">gyors, biztonságos, skálázható.</span>
-        </p>
-        <a
-          href="#contact"
-          class="inline-flex items-center px-12 py-5 bg-white text-(--color-primary) text-lg font-bold uppercase tracking-wider hover:bg-(--color-secondary) hover:text-(--color-on-secondary) transition-all hover:scale-110 shadow-2xl"
-          >Lépjünk tovább →</a
-        >
-
-        <div class="mt-16 grid grid-cols-3 gap-12 text-center">
-          <!-- Skálázás Icon -->
-          <div>
-            <div class="flex justify-center mb-4">
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="10" y="10" width="20" height="20" fill="white" stroke="white" stroke-width="4"/>
-                <rect x="30" y="30" width="20" height="20" fill="none" stroke="white" stroke-width="4"/>
-                <rect x="50" y="50" width="20" height="20" fill="none" stroke="white" stroke-width="4"/>
-                <line x1="20" y1="30" x2="40" y2="40" stroke="white" stroke-width="3"/>
-                <line x1="40" y1="50" x2="60" y2="60" stroke="white" stroke-width="3"/>
-              </svg>
-            </div>
-            <div class="text-sm font-bold uppercase tracking-widest">Skálázás</div>
-          </div>
-
-          <!-- Sebesség Icon -->
-          <div>
-            <div class="flex justify-center mb-4">
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <polygon points="15,40 35,20 35,35 65,35 65,45 35,45 35,60" fill="white"/>
-                <rect x="50" y="25" width="4" height="30" fill="white"/>
-                <rect x="58" y="30" width="4" height="20" fill="white"/>
-              </svg>
-            </div>
-            <div class="text-sm font-bold uppercase tracking-widest">Sebesség</div>
-          </div>
-
-          <!-- Biztonság Icon -->
-          <div>
-            <div class="flex justify-center mb-4">
-              <svg width="80" height="80" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="25" y="35" width="30" height="30" fill="none" stroke="white" stroke-width="4"/>
-                <circle cx="40" cy="30" r="10" fill="none" stroke="white" stroke-width="4"/>
-                <rect x="38" y="48" width="4" height="8" fill="white"/>
-                <circle cx="40" cy="43" r="3" fill="white"/>
-              </svg>
-            </div>
-            <div class="text-sm font-bold uppercase tracking-widest">Biztonság</div>
-          </div>
-        </div>
-      </div>
-    </section>
+   
 
     <!-- Footer -->
-    <footer class="border-t-4 border-(--color-secondary) bg-(--color-surface) py-12">
-      <div class="mx-auto max-w-7xl px-6">
+    <footer class="py-12 px-4 sm:px-6 lg:px-8" style="border-top: 1px solid var(--color-border);">
+      <div class="max-w-7xl mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-          <div class="text-2xl font-bold" style="font-family: var(--font-display);">
-            <span class="text-(--color-primary)">h32</span><span class="text-(--color-secondary)">50</span>
+          <div class="text-lg font-bold" style="font-family: var(--font-display);">
+            <span class="gradient-text">WEBP</span>Konvertáló
           </div>
-          <div class="flex gap-8 text-sm font-medium uppercase tracking-wider">
-            <a class="hover:text-(--color-primary) transition-colors" href="#privacy">Adatvédelem</a>
-            <a class="hover:text-(--color-primary) transition-colors" href="#terms">Feltételek</a>
-            <a class="hover:text-(--color-primary) transition-colors" href="#contact">Kapcsolat</a>
+          <div class="flex gap-8 text-sm" style="color: var(--color-text-muted);">
+            <a href="#" class="hover:opacity-70 transition-opacity">Adatvédelem</a>
+            <a href="#" class="hover:opacity-70 transition-opacity">Feltételek</a>
+            <a href="#" class="hover:opacity-70 transition-opacity">Kapcsolat</a>
           </div>
         </div>
-        <div class="mt-8 text-center text-sm font-medium" style="color: var(--color-text-muted);">
-          © {new Date().getFullYear()} h3250 — Built with Astro + Strapi
+        <div class="text-center mt-8 text-sm" style="color: var(--color-text-muted);">
+          © {new Date().getFullYear()} WEBPKonvertáló – Powered by Astro/React
         </div>
       </div>
     </footer>
