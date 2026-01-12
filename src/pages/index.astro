@@ -1,6 +1,7 @@
 ---
 import "../styles/tailwind.css";
 import FileUploader from "../components/FileUploader"
+import Logo from "../assets/wklogo.svg"
 
 
 ---
@@ -12,7 +13,7 @@ import FileUploader from "../components/FileUploader"
     <meta name="description" content="Professzionális WebP képkonvertáló 100% kliens oldali feldolgozással. Automatikus optimalizálás, magyar ékezet kezelés, 85-95% fájlméret csökkentés. Teljesen ingyenes." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
       :root {
         --color-primary: #0891B2;
@@ -24,7 +25,7 @@ import FileUploader from "../components/FileUploader"
         --color-text: #0F172A;
         --color-text-muted: #64748B;
         --color-border: #E2E8F0;
-        --font-display: 'Syne', sans-serif;
+        --font-display: 'Manrope', sans-serif;
         --font-body: 'Manrope', sans-serif;
         --radius: 16px;
         --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -437,8 +438,8 @@ import FileUploader from "../components/FileUploader"
     <nav class="sticky top-0 z-50 backdrop-blur-xl" style="background: linear-gradient(to bottom, var(--color-surface) 0%, rgba(255, 255, 255, 0.95) 100%); border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow);" x-data="{ mobileMenuOpen: false }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
-          <a href="/" class="text-xl font-bold transition-all duration-300 hover:opacity-80" style="font-family: var(--font-display); color: var(--color-text);">
-            <span class="gradient-text">WEBP</span>Konvertáló
+          <a href="/" class="transition-all duration-300 hover:opacity-80 flex items-center">
+            <img src={Logo.src} alt="WebP Konvertáló" class="h-8" />
           </a>
 
           <!-- Desktop Nav -->
@@ -490,7 +491,7 @@ import FileUploader from "../components/FileUploader"
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-16 pb-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section class="pt-12 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
       <!-- Background decoration -->
       <div class="absolute inset-0 -z-10 opacity-30">
         <div class="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl" style="background: var(--gradient-primary);"></div>
@@ -498,36 +499,55 @@ import FileUploader from "../components/FileUploader"
       </div>
 
       <div class="max-w-7xl mx-auto">
-        <div class="text-center max-w-4xl mx-auto mb-16">
-          <div class="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-6 animate-fade-in-up" style="background-color: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow); border: 1px solid var(--color-border);">
-            Kliens oldali feldolgozás
+        <div class="grid lg:grid-cols-2 gap-12 items-start">
+          <!-- Left: Text Content -->
+          <div>
+            <div class="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-4 animate-fade-in-up" style="background-color: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow); border: 1px solid var(--color-border);">
+              Kliens oldali feldolgozás
+            </div>
+
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 animate-fade-in-up delay-100" style="font-family: var(--font-display); color: var(--color-text); line-height: 1.2;">
+              WebP Képkonvertáló
+            </h1>
+
+            <p class="text-base md:text-lg mb-6 animate-fade-in-up delay-200 leading-relaxed" style="color: var(--color-text-muted);">
+              Képek WebP-re konvertálása böngészőből. Automatikus optimalizálás, SEO-barát fájlnevek, 100% privát.
+            </p>
+
+            <!-- Key features list -->
+            <ul class="space-y-2 animate-fade-in-up delay-300">
+              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+                <span class="text-lg">✓</span>
+                <span>85-95% fájlméret csökkenés</span>
+              </li>
+              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+                <span class="text-lg">✓</span>
+                <span>Magyar ékezetek és szóközök kezelése</span>
+              </li>
+              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+                <span class="text-lg">✓</span>
+                <span>Képek nem hagyják el a gépedet</span>
+              </li>
+            </ul>
           </div>
 
-          <h1 class="text-5xl md:text-7xl font-bold mb-6 animate-fade-in-up delay-100" style="font-family: var(--font-display); color: var(--color-text); line-height: 1.05;">
-            WebP Képkonvertáló
-          </h1>
-
-          <p class="text-lg md:text-xl mb-12 animate-fade-in-up delay-200 max-w-2xl mx-auto leading-relaxed" style="color: var(--color-text-muted);">
-            Képek WebP-re konvertálása böngészőből.
-          </p>
-        </div>
-
-        <!-- FileUploader Component -->
-        <div class="max-w-3xl mx-auto animate-fade-in-up delay-400">
-          <FileUploader client:load />
+          <!-- Right: FileUploader Component -->
+          <div class="animate-fade-in-up delay-400">
+            <FileUploader client:load />
+          </div>
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section id="features" class="py-24 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
+    <section id="features" class="pt-16 pb-24 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
       <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
             Funkciók
           </h2>
-          <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--color-text-muted);">
-            Amit tud az alkalmazás.
+          <p class="text-base md:text-lg max-w-2xl mx-auto" style="color: var(--color-text-muted);">
+            Hogyan működik?
           </p>
         </div>
 
@@ -562,7 +582,7 @@ import FileUploader from "../components/FileUploader"
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">SEO-barát fájlnevek</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Automatikus magyar ékezet normalizálás. "Kéménytető.jpg" → "kemenyteto.webp".
+              Automatikus magyar ékezetek és szóközök kezelése. "Kéménytető Szigetelés.jpg" → "kemenyteto-szigeteles.webp".
             </p>
           </div>
 
@@ -605,12 +625,12 @@ import FileUploader from "../components/FileUploader"
     <!-- Benefits Section -->
     <section id="benefits" class="py-24 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
             Miért WebP?
           </h2>
-          <p class="text-lg md:text-xl max-w-2xl mx-auto" style="color: var(--color-text-muted);">
-            Technikai előnyök és valós eredmények.
+          <p class="text-base md:text-lg max-w-2xl mx-auto" style="color: var(--color-text-muted);">
+            Technikai előnyök.
           </p>
         </div>
 
@@ -709,89 +729,110 @@ import FileUploader from "../components/FileUploader"
     </section>
 
     <!-- FAQ Section -->
-    <section id="faq" class="py-24 px-4 sm:px-6 lg:px-8">
+    <section id="faq" class="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <!-- Background decoration -->
+      <div class="absolute inset-0 -z-10 opacity-20">
+        <div class="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl" style="background: var(--gradient-accent);"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl" style="background: var(--gradient-success);"></div>
+      </div>
+
       <div class="max-w-4xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
             Gyakori kérdések
           </h2>
+          <p class="text-base md:text-lg" style="color: var(--color-text-muted);">
+            Amit tudnod kell.
+          </p>
         </div>
 
-        <div class="space-y-4" x-data="{ openFaq: null }">
+        <div class="space-y-3" x-data="{ openFaq: null }">
           <!-- FAQ 1 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 1 ? null : 1">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Mennyibe kerül?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 1 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.05), rgba(6, 182, 212, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 1 ? null : 1">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Mennyibe kerül?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 1 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 1" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
                 Ingyenes, open-source projekt. A teljes feldolgozás kliens oldalon fut a böngészőben, így nincs szerver költség.
               </p>
             </div>
           </div>
 
           <!-- FAQ 2 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 2 ? null : 2">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Biztonságos? Hová kerülnek a képeim?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 2 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(251, 146, 60, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 2 ? null : 2">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Biztonságos? Hová kerülnek a képeim?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-accent);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 2 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 2" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
                 A feldolgozás teljesen kliens oldalon történik a böngésződben - a képek nem hagyják el a gépedet. Nincs szerver feltöltés, nincs tárolás.
               </p>
             </div>
           </div>
 
           <!-- FAQ 3 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 3 ? null : 3">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Milyen formátumokat támogat?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 3 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 3 ? null : 3">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Milyen formátumokat támogat?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-success);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 3 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 3" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
-                Jelenleg JPG és PNG formátumokat. A konvertálás WebP formátumra történik. Hamarosan érkezik: GIF, BMP, TIFF támogatás.
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
+                Jelenleg JPG és PNG formátumokat. A konvertálás WebP formátumra történik.
               </p>
             </div>
           </div>
 
           <!-- FAQ 4 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 4 ? null : 4">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Miért fontos a slug-osított fájlnév?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 4 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.05), rgba(6, 182, 212, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 4 ? null : 4">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Miért fontos a slug-osított fájlnév?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 4 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 4" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
-                A Google kedveli az URL-barát fájlneveket. Magyar ékezetekkel ("Kéménytető.jpg") a képkeresés nehezebben találja meg a képedet. Slug-osított névvel ("kemenyteto.webp") jobb ranking képkeresésben és SEO szempontból is előnyös.
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
+                A Google kedveli az URL-barát fájlneveket. Slug-osított névvel ("kemenyteto.webp") jobb ranking képkeresésben és SEO szempontból is előnyös.
               </p>
             </div>
           </div>
 
           <!-- FAQ 5 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 5 ? null : 5">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Működik mobilon?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 5 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(251, 146, 60, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 5 ? null : 5">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Működik mobilon?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-accent);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 5 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 5" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
-                Igen! Responsive design, mobil és tablet optimalizált. Minden modern böngészőben működik: Chrome, Firefox, Safari, Edge.
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
+                Igen! Responsive design, mobil és tablet optimalizált. Minden modern böngészőben működik.
               </p>
             </div>
           </div>
 
           <!-- FAQ 6 -->
-          <div class="faq-item p-6 rounded-xl cursor-pointer" style="background-color: var(--color-surface); border: 2px solid var(--color-border);" @click="openFaq = openFaq === 6 ? null : 6">
-            <div class="flex justify-between items-center">
-              <h3 class="text-lg font-bold" style="font-family: var(--font-display); color: var(--color-text);">Hány képet tölthetek fel egyszerre?</h3>
-              <span class="text-2xl" style="color: var(--color-primary);" x-text="openFaq === 6 ? '−' : '+'"></span>
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 6 ? null : 6">
+            <div class="flex justify-between items-center gap-4">
+              <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Hány képet tölthetek fel egyszerre?</h3>
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-success);">
+                <span class="text-white text-lg font-bold" x-text="openFaq === 6 ? '−' : '+'"></span>
+              </div>
             </div>
             <div x-show="openFaq === 6" x-collapse>
-              <p class="mt-4" style="color: var(--color-text-muted);">
-                Jelenleg 1 kép egyszerre. Batch feldolgozás funkció (több fájl egyszerre, ZIP letöltés) tervben van.
+              <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
+                Jelenleg 1 kép egyszerre. Batch feldolgozás funkció tervben van.
               </p>
             </div>
           </div>
@@ -800,44 +841,38 @@ import FileUploader from "../components/FileUploader"
     </section>
 
     <!-- Roadmap Section -->
-    <section class="py-24 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
+    <section class="py-20 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
       <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-16">
-          <h2 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
             Tervezett funkciók
           </h2>
-          <p class="text-lg md:text-xl" style="color: var(--color-text-muted);">
+          <p class="text-base md:text-lg" style="color: var(--color-text-muted);">
             Amit még szeretnék hozzáadni.
           </p>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
-          <!-- Q1 2026 -->
-          <div class="p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-primary);">
-         
-            <h3 class="text-2xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">Batch & Progress</h3>
-            <ul class="space-y-2" style="color: var(--color-text-muted);">
-              <li>✓ Batch feldolgozás (max 10 fájl)</li>
-              <li>✓ ZIP letöltés (összes konvertált)</li>
-              <li>✓ Progress bar vizuális feedback</li>
+          <!-- Batch & Progress -->
+          <div class="p-6 rounded-xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border);">
+            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Batch & Progress</h3>
+            <ul class="space-y-1.5 text-sm" style="color: var(--color-text-muted);">
+              <li>• Batch feldolgozás (max 10 fájl)</li>
+              <li>• ZIP letöltés (összes konvertált)</li>
+              <li>• Progress bar vizuális feedback</li>
             </ul>
           </div>
 
-          <!-- Q2 2026 -->
-          <div class="p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-accent);">
-         
-            <h3 class="text-2xl font-bold mb-4" style="font-family: var(--font-display); color: var(--color-text);">Egyedi Beállítások</h3>
-            <ul class="space-y-2" style="color: var(--color-text-muted);">
-              <li>✓ Egyedi méretezés UI</li>
-              <li>✓ Képarány választó (16:9, 4:3, 1:1)</li>
-              <li>✓ Minőség slider (0-100%)</li>
-              <li>✓ Crop funkció</li>
+          <!-- Egyedi Beállítások -->
+          <div class="p-6 rounded-xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border);">
+            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Egyedi Beállítások</h3>
+            <ul class="space-y-1.5 text-sm" style="color: var(--color-text-muted);">
+              <li>• Egyedi méretezés UI</li>
+              <li>• Képarány választó (16:9, 4:3, 1:1)</li>
+              <li>• Minőség slider (0-100%)</li>
+              <li>• Crop funkció</li>
             </ul>
           </div>
-
-       
-
-       
         </div>
       </div>
     </section>
@@ -845,35 +880,39 @@ import FileUploader from "../components/FileUploader"
 
 
     <!-- Footer -->
-    <footer class="py-16 px-4 sm:px-6 lg:px-8" style="border-top: 1px solid var(--color-border); background-color: var(--color-surface);">
+    <footer class="py-12 px-4 sm:px-6 lg:px-8" style="border-top: 1px solid var(--color-border); background-color: var(--color-bg);">
       <div class="max-w-7xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-12 mb-12">
-          <!-- Brand -->
-          <div>
-            <div class="text-2xl font-bold mb-4" style="font-family: var(--font-display);">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+          <!-- Brand & Copyright -->
+          <div class="text-center md:text-left">
+            <div class="text-xl font-bold mb-2" style="font-family: var(--font-display);">
               <span class="gradient-text">WEBP</span>Konvertáló
             </div>
-            <p class="text-sm leading-relaxed" style="color: var(--color-text-muted);">
-              Képkonvertálás WebP formátumra böngészőből.
+            <p class="text-xs mb-1" style="color: var(--color-text-muted);">
+              © {new Date().getFullYear()} — MIT License
             </p>
-        
-          <div class="text-sm" style="color: var(--color-text-muted);">
-            © {new Date().getFullYear()} WEBPKonvertáló
+            <p class="text-xs" style="color: var(--color-text-muted);">
+              Astro + React + TypeScript
+            </p>
           </div>
-          <div class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-            <span class="font-semibold">Semmilyen adatot nem gyűjtök vagy tárolok Rólad :)</span>
-        
+
+          <!-- Privacy Statement -->
+          <div class="text-center md:text-right">
+            <p class="text-sm font-medium mb-1" style="color: var(--color-text);">
+              100% Privát
+            </p>
+            <p class="text-xs max-w-xs" style="color: var(--color-text-muted);">
+              Semmilyen adatot nem gyűjtök vagy tárolok. Kliens oldali feldolgozás.
+            </p>
+          </div>
         </div>
-          </div>
 
-         
-          
-
-          <!-- Legal -->
-       
-
-        <!-- Bottom Bar -->
-      
+        <!-- Links -->
+        <div class="flex justify-center gap-6 mt-8 pt-6" style="border-top: 1px solid var(--color-border);">
+          <a href="#features" class="text-xs hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Funkciók</a>
+          <a href="#benefits" class="text-xs hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">Előnyök</a>
+          <a href="#faq" class="text-xs hover:opacity-70 transition-opacity" style="color: var(--color-text-muted);">GYIK</a>
+        </div>
       </div>
     </footer>
   </body>

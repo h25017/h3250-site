@@ -118,12 +118,12 @@ export default function FileUploader() {
                     border: "1px solid var(--color-border)",
                 }}>
                 <h2
-                    className="text-3xl font-bold mb-6"
+                    className="text-xl font-semibold mb-4"
                     style={{
                         fontFamily: "var(--font-display)",
                         color: "var(--color-text)",
                     }}>
-                    Fájl feltöltő
+                    Fájl feltöltése
                 </h2>
 
                 <label
