@@ -5,7 +5,7 @@ import Logo from "../assets/wklogo.svg"
 
 
 ---
-<html lang="hu" class="h-full">
+<html lang="hu" class="h-full dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -36,40 +36,23 @@ import Logo from "../assets/wklogo.svg"
       }
 
       :root.dark {
-        --color-primary: #22D3EE;
-        --color-accent: #FB923C;
-        --color-success: #34D399;
+        --color-primary: #939393;
+        --color-accent: #FF4D30;
+        --color-success: #FF4D30;
         --color-danger: #F87171;
-        --color-bg: #0F172A;
-        --color-surface: #1E293B;
+        --color-bg: #0A0E15;
+        --color-surface: #212631;
         --color-text: #F1F5F9;
-        --color-text-muted: #94A3B8;
-        --color-border: #334155;
+        --color-text-muted: #939393;
+        --color-border: #4a4a4a;
+        --color-surface-elevated: #313131;
         --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
         --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-        --gradient-primary: linear-gradient(135deg, #22D3EE 0%, #06B6D4 100%);
-        --gradient-accent: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
-        --gradient-success: linear-gradient(135deg, #34D399 0%, #10B981 100%);
+        --gradient-primary: linear-gradient(135deg, #4a4a4a 0%, #313131 100%);
+        --gradient-accent: linear-gradient(135deg, #FF4D30 0%, #FF6B4D 100%);
+        --gradient-success: linear-gradient(135deg, #FF4D30 0%, #FF6B4D 100%);
       }
 
-      @media (prefers-color-scheme: dark) {
-        :root:not(.light) {
-          --color-primary: #22D3EE;
-          --color-accent: #FB923C;
-          --color-success: #34D399;
-          --color-danger: #F87171;
-          --color-bg: #0F172A;
-          --color-surface: #1E293B;
-          --color-text: #F1F5F9;
-          --color-text-muted: #94A3B8;
-          --color-border: #334155;
-          --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-          --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-          --gradient-primary: linear-gradient(135deg, #22D3EE 0%, #06B6D4 100%);
-          --gradient-accent: linear-gradient(135deg, #FB923C 0%, #F97316 100%);
-          --gradient-success: linear-gradient(135deg, #34D399 0%, #10B981 100%);
-        }
-      }
 
       /* Smooth transitions for theme changes */
       * {
@@ -122,6 +105,22 @@ import Logo from "../assets/wklogo.svg"
       .delay-400 { animation-delay: 0.4s; opacity: 0; }
       .delay-500 { animation-delay: 0.5s; opacity: 0; }
       .delay-600 { animation-delay: 0.6s; opacity: 0; }
+
+      /* Hero particles canvas */
+      #hero-particles {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      .hero-container {
+        position: relative;
+        z-index: 1;
+      }
 
       /* Bento card hover effects */
       .bento-card {
@@ -205,7 +204,7 @@ import Logo from "../assets/wklogo.svg"
       }
 
       .theme-toggle:hover {
-        background: var(--color-primary);
+        background: var(--color-accent);
       }
 
       .theme-toggle::after {
@@ -232,7 +231,7 @@ import Logo from "../assets/wklogo.svg"
 
       /* Gradient text */
       .gradient-text {
-        background: var(--gradient-primary);
+        background: var(--gradient-accent);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -248,9 +247,9 @@ import Logo from "../assets/wklogo.svg"
       /* Badge shimmer effect */
       .badge-shimmer {
         background: linear-gradient(90deg,
-          var(--color-primary) 0%,
+          var(--color-text-muted) 0%,
           var(--color-accent) 50%,
-          var(--color-primary) 100%
+          var(--color-text-muted) 100%
         );
         background-size: 200% 100%;
         animation: shimmer 3s infinite;
@@ -298,7 +297,7 @@ import Logo from "../assets/wklogo.svg"
         transform: translateX(-50%);
         width: 0;
         height: 2px;
-        background: linear-gradient(90deg, var(--color-primary), var(--color-accent));
+        background: var(--color-accent);
         transition: width 0.3s ease;
       }
 
@@ -307,7 +306,7 @@ import Logo from "../assets/wklogo.svg"
       }
 
       .nav-link:hover {
-        color: var(--color-primary) !important;
+        color: var(--color-accent) !important;
         transform: translateY(-1px);
       }
 
@@ -330,10 +329,7 @@ import Logo from "../assets/wklogo.svg"
         box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
       }
 
-      /* Dark mode navigation */
-      :root.dark nav {
-        background: linear-gradient(to bottom, var(--color-surface) 0%, rgba(30, 41, 59, 0.95) 100%) !important;
-      }
+      
     </style>
     <script>
       // Dark mode toggle
@@ -380,6 +376,10 @@ import Logo from "../assets/wklogo.svg"
     <script>
       // @ts-ignore
       import Alpine from 'alpinejs';
+      // @ts-ignore
+      import collapse from '@alpinejs/collapse';
+      // @ts-ignore
+      Alpine.plugin(collapse);
       // @ts-ignore
       window.Alpine = Alpine;
       Alpine.start();
@@ -435,12 +435,10 @@ import Logo from "../assets/wklogo.svg"
   </head>
   <body class="min-h-full antialiased" style="background-color: var(--color-bg); color: var(--color-text); font-family: var(--font-body);">
     <!-- Navigation -->
-    <nav class="sticky top-0 z-50 backdrop-blur-xl" style="background: linear-gradient(to bottom, var(--color-surface) 0%, rgba(255, 255, 255, 0.95) 100%); border-bottom: 1px solid var(--color-border); box-shadow: var(--shadow);" x-data="{ mobileMenuOpen: false }">
+    <nav class="absolute  w-full top-0 z-50" style="" x-data="{ mobileMenuOpen: false }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-16">
-          <a href="/" class="transition-all duration-300 hover:opacity-80 flex items-center">
-            <img src={Logo.src} alt="WebP Konvertáló" class="h-8" />
-          </a>
+        <div class="flex items-center justify-end h-16">
+         
 
           <!-- Desktop Nav -->
           <div class="hidden md:flex items-center gap-6">
@@ -491,14 +489,11 @@ import Logo from "../assets/wklogo.svg"
     </nav>
 
     <!-- Hero Section -->
-    <section class="pt-12 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      <!-- Background decoration -->
-      <div class="absolute inset-0 -z-10 opacity-30">
-        <div class="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl" style="background: var(--gradient-primary);"></div>
-        <div class="absolute bottom-20 right-10 w-96 h-96 rounded-full blur-3xl" style="background: var(--gradient-accent);"></div>
-      </div>
+    <section id="hero" class="hero pt-24 pb-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      <!-- Particle animation canvas -->
+      <canvas id="hero-particles"></canvas>
 
-      <div class="max-w-7xl mx-auto">
+      <div class="max-w-7xl mx-auto hero-container">
         <div class="grid lg:grid-cols-2 gap-12 items-start">
           <!-- Left: Text Content -->
           <div>
@@ -517,16 +512,28 @@ import Logo from "../assets/wklogo.svg"
             <!-- Key features list -->
             <ul class="space-y-2 animate-fade-in-up delay-300">
               <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <span class="text-lg">✓</span>
+                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <span>85-95% fájlméret csökkenés</span>
               </li>
               <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <span class="text-lg">✓</span>
+                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <span>Magyar ékezetek és szóközök kezelése</span>
               </li>
               <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <span class="text-lg">✓</span>
+                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <span>Képek nem hagyják el a gépedet</span>
+              </li>
+              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
+                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span>Akár 10 kép egyszerre, ZIP letöltés</span>
               </li>
             </ul>
           </div>
@@ -539,8 +546,11 @@ import Logo from "../assets/wklogo.svg"
       </div>
     </section>
 
+    <!-- Section Divider -->
+    <div class="h-px w-full" style="background: linear-gradient(90deg, transparent 0%, var(--color-border) 50%, transparent 100%);"></div>
+
     <!-- Features Section -->
-    <section id="features" class="pt-16 pb-24 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
+    <section id="features" class="py-20 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
@@ -554,20 +564,25 @@ import Logo from "../assets/wklogo.svg"
         <!-- Bento Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <!-- Feature 1: Drag & Drop -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <div class="card-icon mb-4" style="background: var(--gradient-primary);">
-              <span class="text-3xl">📤</span>
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Drag & Drop</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Húzd rá a képet a feltöltő területre vagy kattints a fájl kiválasztásához.
+              Húzd rá a képeket a feltöltő területre vagy kattints a fájlok kiválasztásához. Egyszerre akár 10 képet is feltölthetsz.
             </p>
           </div>
 
           <!-- Feature 2: Auto Optimization -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-accent);">
-              <span class="text-3xl">🔧</span>
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
+            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Automatikus optimalizálás</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
@@ -576,9 +591,11 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- Feature 3: SEO Names -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-success);">
-              <span class="text-3xl">📝</span>
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
+            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">SEO-barát fájlnevek</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
@@ -587,31 +604,38 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- Feature 4: Preview -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <div class="card-icon mb-4" style="background: var(--gradient-primary);">
-              <span class="text-3xl">👀</span>
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Előnézet</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Eredeti és konvertált kép megjelenítése méret és százalékos megtakarítás adatokkal.
+              Minden képnél láthatod az eredeti és konvertált méretet, valamint az összesített megtakarítást.
             </p>
           </div>
 
           <!-- Feature 5: Instant Download -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-accent);">
-              <span class="text-3xl">💾</span>
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
+            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Letöltés</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Egy kattintással letölthető az optimalizált kép SEO-barát fájlnévvel.
+              Egyenként vagy ZIP-ben letöltheted az összes optimalizált képet SEO-barát fájlnevekkel.
             </p>
           </div>
 
           <!-- Feature 6: Privacy -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-success);">
-              <span class="text-3xl">🔒</span>
+          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
+            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
+              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
             </div>
             <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Adatvédelem</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
@@ -622,55 +646,62 @@ import Logo from "../assets/wklogo.svg"
       </div>
     </section>
 
+    <!-- Section Divider -->
+    <div class="h-px w-full" style="background: linear-gradient(90deg, transparent 0%, var(--color-border) 50%, transparent 100%);"></div>
+
     <!-- Benefits Section -->
-    <section id="benefits" class="py-24 px-4 sm:px-6 lg:px-8">
+    <section id="benefits" class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-7xl mx-auto">
         <div class="text-center mb-12">
           <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
             Miért WebP?
           </h2>
-          <p class="text-base md:text-lg max-w-2xl mx-auto" style="color: var(--color-text-muted);">
-            Technikai előnyök.
-          </p>
         </div>
 
-        <div class="grid md:grid-cols-2 gap-8 mb-12">
+        <div class="grid md:grid-cols-2 gap-8">
           <!-- Technical Benefits -->
-          <div class="p-8 rounded-2xl" style="background-color: var(--color-surface); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <h3 class="text-2xl font-bold mb-6" style="font-family: var(--font-display); color: var(--color-text);">
-              Technikai előnyök
-            </h3>
+          <div class="p-8 rounded-2xl" style="background-color: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <ul class="space-y-4">
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">25-35% kisebb</strong>
                   <span style="color: var(--color-text-muted);"> mint JPG ugyanazon minőségnél</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">26% kisebb</strong>
                   <span style="color: var(--color-text-muted);"> mint PNG formátumnál</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Átlátszóság támogatás</strong>
                   <span style="color: var(--color-text-muted);"> mint PNG-nél</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Animáció támogatás</strong>
                   <span style="color: var(--color-text-muted);"> mint GIF-nél</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">97%+ böngésző támogatás</strong>
                   <span style="color: var(--color-text-muted);"> globálisan</span>
@@ -680,41 +711,48 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- Practical Benefits -->
-          <div class="p-8 rounded-2xl" style="background-color: var(--color-surface); border: 2px solid var(--color-border); box-shadow: var(--shadow);">
-            <h3 class="text-2xl font-bold mb-6" style="font-family: var(--font-display); color: var(--color-text);">
-              Gyakorlati előnyök
-            </h3>
+          <div class="p-8 rounded-2xl" style="background-color: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <ul class="space-y-4">
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Kisebb tárhely igény</strong>
                   <span style="color: var(--color-text-muted);"> a szerveren</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Gyorsabb oldalbetöltés</strong>
                   <span style="color: var(--color-text-muted);"> kisebb fájlméret miatt</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Jobb SEO</strong>
                   <span style="color: var(--color-text-muted);"> a Core Web Vitals javulása miatt</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Kisebb sávszélesség</strong>
                   <span style="color: var(--color-text-muted);"> használat CDN esetén</span>
                 </div>
               </li>
               <li class="flex items-start gap-3">
-                <span class="text-xl">•</span>
+                <svg class="w-5 h-5 shrink-0 mt-0.5" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
                 <div>
                   <strong style="color: var(--color-text);">Mobilbarát</strong>
                   <span style="color: var(--color-text-muted);"> kisebb adatforgalom</span>
@@ -723,17 +761,18 @@ import Logo from "../assets/wklogo.svg"
             </ul>
           </div>
         </div>
-
-   
       </div>
     </section>
 
+    <!-- Section Divider -->
+    <div class="h-px w-full" style="background: linear-gradient(90deg, transparent 0%, var(--color-border) 50%, transparent 100%);"></div>
+
     <!-- FAQ Section -->
-    <section id="faq" class="py-24 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+    <section id="faq" class="py-20 px-4 sm:px-6 lg:px-8 relative overflow-hidden" style="background-color: var(--color-surface);">
       <!-- Background decoration -->
       <div class="absolute inset-0 -z-10 opacity-20">
-        <div class="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl" style="background: var(--gradient-accent);"></div>
-        <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl" style="background: var(--gradient-success);"></div>
+        <div class="absolute top-0 right-0 w-96 h-96 rounded-full blur-3xl" style="background: var(--gradient-primary);"></div>
+        <div class="absolute bottom-0 left-0 w-72 h-72 rounded-full blur-3xl" style="background: var(--gradient-primary);"></div>
       </div>
 
       <div class="max-w-4xl mx-auto">
@@ -748,7 +787,7 @@ import Logo from "../assets/wklogo.svg"
 
         <div class="space-y-3" x-data="{ openFaq: null }">
           <!-- FAQ 1 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.05), rgba(6, 182, 212, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 1 ? null : 1">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 1 ? null : 1">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Mennyibe kerül?</h3>
               <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
@@ -763,10 +802,10 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- FAQ 2 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(251, 146, 60, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 2 ? null : 2">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 2 ? null : 2">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Biztonságos? Hová kerülnek a képeim?</h3>
-              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-accent);">
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
                 <span class="text-white text-lg font-bold" x-text="openFaq === 2 ? '−' : '+'"></span>
               </div>
             </div>
@@ -778,10 +817,10 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- FAQ 3 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 3 ? null : 3">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 3 ? null : 3">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Milyen formátumokat támogat?</h3>
-              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-success);">
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
                 <span class="text-white text-lg font-bold" x-text="openFaq === 3 ? '−' : '+'"></span>
               </div>
             </div>
@@ -793,7 +832,7 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- FAQ 4 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(8, 145, 178, 0.05), rgba(6, 182, 212, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 4 ? null : 4">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 4 ? null : 4">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Miért fontos a slug-osított fájlnév?</h3>
               <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
@@ -808,10 +847,10 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- FAQ 5 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(249, 115, 22, 0.05), rgba(251, 146, 60, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 5 ? null : 5">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 5 ? null : 5">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Működik mobilon?</h3>
-              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-accent);">
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
                 <span class="text-white text-lg font-bold" x-text="openFaq === 5 ? '−' : '+'"></span>
               </div>
             </div>
@@ -823,61 +862,22 @@ import Logo from "../assets/wklogo.svg"
           </div>
 
           <!-- FAQ 6 -->
-          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05), rgba(52, 211, 153, 0.05)); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 6 ? null : 6">
+          <div class="faq-item p-5 rounded-xl cursor-pointer backdrop-blur-sm" style="background: var(--color-surface); border: 1px solid var(--color-border); transition: all 0.3s ease;" @click="openFaq = openFaq === 6 ? null : 6">
             <div class="flex justify-between items-center gap-4">
               <h3 class="text-base font-bold" style="font-family: var(--font-display); color: var(--color-text);">Hány képet tölthetek fel egyszerre?</h3>
-              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-success);">
+              <div class="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center" style="background: var(--gradient-primary);">
                 <span class="text-white text-lg font-bold" x-text="openFaq === 6 ? '−' : '+'"></span>
               </div>
             </div>
             <div x-show="openFaq === 6" x-collapse>
               <p class="mt-3 text-sm leading-relaxed" style="color: var(--color-text-muted);">
-                Jelenleg 1 kép egyszerre. Batch feldolgozás funkció tervben van.
+                Maximum 10 képet egyszerre! Drag & drop vagy kattintás után egyszerre konvertálhatsz és ZIP-ben is letöltheted az összeset.
               </p>
             </div>
           </div>
         </div>
       </div>
     </section>
-
-    <!-- Roadmap Section -->
-    <section class="py-20 px-4 sm:px-6 lg:px-8" style="background-color: var(--color-surface);">
-      <div class="max-w-6xl mx-auto">
-        <div class="text-center mb-12">
-          <h2 class="text-2xl md:text-3xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">
-            Tervezett funkciók
-          </h2>
-          <p class="text-base md:text-lg" style="color: var(--color-text-muted);">
-            Amit még szeretnék hozzáadni.
-          </p>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <!-- Batch & Progress -->
-          <div class="p-6 rounded-xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border);">
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Batch & Progress</h3>
-            <ul class="space-y-1.5 text-sm" style="color: var(--color-text-muted);">
-              <li>• Batch feldolgozás (max 10 fájl)</li>
-              <li>• ZIP letöltés (összes konvertált)</li>
-              <li>• Progress bar vizuális feedback</li>
-            </ul>
-          </div>
-
-          <!-- Egyedi Beállítások -->
-          <div class="p-6 rounded-xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border);">
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Egyedi Beállítások</h3>
-            <ul class="space-y-1.5 text-sm" style="color: var(--color-text-muted);">
-              <li>• Egyedi méretezés UI</li>
-              <li>• Képarány választó (16:9, 4:3, 1:1)</li>
-              <li>• Minőség slider (0-100%)</li>
-              <li>• Crop funkció</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-
 
     <!-- Footer -->
     <footer class="py-12 px-4 sm:px-6 lg:px-8" style="border-top: 1px solid var(--color-border); background-color: var(--color-bg);">
@@ -915,5 +915,143 @@ import Logo from "../assets/wklogo.svg"
         </div>
       </div>
     </footer>
+
+    <script is:inline>
+      // @ts-nocheck
+      // Hero Particles Animation
+      (function() {
+        const canvas = document.getElementById('hero-particles');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        let mouse = { x: null, y: null, radius: 120 };
+        let animationId;
+
+        function resizeCanvas() {
+          const hero = document.querySelector('.hero');
+          if (!hero) return;
+          canvas.width = hero.offsetWidth;
+          canvas.height = hero.offsetHeight;
+        }
+
+        class Particle {
+          constructor() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 1;
+            this.baseX = this.x;
+            this.baseY = this.y;
+            this.density = Math.random() * 30 + 1;
+            this.vx = (Math.random() - 0.5) * 0.3;
+            this.vy = (Math.random() - 0.5) * 0.3;
+            this.opacity = Math.random() * 0.5 + 0.2;
+          }
+
+          draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            // Use primary color from CSS variable
+            const isDark = document.documentElement.classList.contains('dark');
+            const color = isDark ? '34, 211, 238' : '8, 145, 178';
+            ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
+            ctx.fill();
+          }
+
+          update() {
+            // Floating movement
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Bounce off edges softly
+            if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+            if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+
+            // Mouse interaction
+            if (mouse.x !== null && mouse.y !== null) {
+              let dx = mouse.x - this.x;
+              let dy = mouse.y - this.y;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < mouse.radius) {
+                let force = (mouse.radius - distance) / mouse.radius;
+                let dirX = dx / distance;
+                let dirY = dy / distance;
+                this.x -= dirX * force * 2;
+                this.y -= dirY * force * 2;
+              }
+            }
+          }
+        }
+
+        function init() {
+          particles = [];
+          const numberOfParticles = Math.floor((canvas.width * canvas.height) / 3000);
+          for (let i = 0; i < Math.min(numberOfParticles, 300); i++) {
+            particles.push(new Particle());
+          }
+        }
+
+        function connectParticles() {
+          const isDark = document.documentElement.classList.contains('dark');
+          const color = isDark ? '34, 211, 238' : '8, 145, 178';
+
+          for (let a = 0; a < particles.length; a++) {
+            for (let b = a + 1; b < particles.length; b++) {
+              let dx = particles[a].x - particles[b].x;
+              let dy = particles[a].y - particles[b].y;
+              let distance = Math.sqrt(dx * dx + dy * dy);
+
+              if (distance < 100) {
+                let opacity = (100 - distance) / 100 * 0.15;
+                ctx.strokeStyle = `rgba(${color}, ${opacity})`;
+                ctx.lineWidth = 0.5;
+                ctx.beginPath();
+                ctx.moveTo(particles[a].x, particles[a].y);
+                ctx.lineTo(particles[b].x, particles[b].y);
+                ctx.stroke();
+              }
+            }
+          }
+        }
+
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+          particles.forEach(particle => {
+            particle.update();
+            particle.draw();
+          });
+
+          connectParticles();
+          animationId = requestAnimationFrame(animate);
+        }
+
+        // Event Listeners
+        const hero = document.querySelector('.hero');
+
+        if (hero) {
+          hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+          });
+
+          hero.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+          });
+        }
+
+        window.addEventListener('resize', () => {
+          resizeCanvas();
+          init();
+        });
+
+        // Initialize
+        resizeCanvas();
+        init();
+        animate();
+      })();
+    </script>
   </body>
 </html>

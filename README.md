@@ -1,105 +1,108 @@
-# 🖼️ WebP Képkonvertáló
+# WebP Kepkonvertalo
 
-Modern, SEO-optimalizált képkonvertáló alkalmazás, amely JPG/PNG képeket alakít át WebP formátumra magyar ékezetkezeléssel.
+Modern, SEO-optimalizalt kepkonvertalo alkalmazas, amely JPG/PNG kepeket alakit at WebP formatumra magyar ekezet kezelessel.
 
-## ✨ Funkciók
+## Funkciok
 
-### 🎯 Alapfunkciók
-- **Drag & Drop feltöltés** - Vizuális feedback-kel
-- **Képformátum konverzió** - JPG/PNG → WebP
-- **Képméret optimalizálás** - Automatikus átméretezés 1920px max szélesség/magasság
-- **Kompresszió** - 90% minőséggel, jelentős fájlméret csökkentés
-- **Élő előnézet** - Eredeti és konvertált kép összehasonlítása
+### Alapfunkciok
+- **Batch feltoltes** - Max 10 kep egyszerre (drag & drop)
+- **Kepformatum konverzio** - JPG/PNG -> WebP
+- **Kepmeret optimalizalas** - Automatikus atmeretezés 1920px max szelesseg/magassag
+- **Kompresszio** - 90% minoseggel, jelentos fajlmeret csokkentes
+- **ZIP letoltes** - Osszes konvertalt kep egyben
+- **Egyenkenti letoltes** - Minden kep kulon is letoltheto
+- **Progress indikator** - Statusz jelzok minden fajlhoz
 
-### 📝 SEO Optimalizálás
-- **Magyar ékezetek normalizálása**
-  - `á,é,í,ó,ö,ő,ú,ü,ű` → `a,e,i,o,o,o,u,u,u`
-- **URL-barát fájlnevek**
-  - `Kéménytető Szigetelés.jpg` → `kemenyteto-szigeteles.webp`
-- **Automatikus slug generálás**
-  - Kisbetűsítés
-  - Speciális karakterek eltávolítása
-  - Szóközök kötőjelre cserélése
+### SEO Optimalizalas
+- **Magyar ekezetek normalizalasa**
+  - `a,e,i,o,o,o,u,u,u` -> `a,e,i,o,o,o,u,u,u`
+- **URL-barat fajlnevek**
+  - `Kemenyteto Szigeteles.jpg` -> `kemenyteto-szigeteles.webp`
+- **Automatikus slug generalas**
+  - Kisbetusites
+  - Specialis karakterek eltavolitasa
+  - Szokozok kotojelre cserelese
 
-### 🎨 UI/UX
-- **Dark mode támogatás** - Automatikus rendszer téma követés
-- **Responsive design** - Mobil és desktop optimalizált
+### UI/UX
+- **Dark mode tamogatas** - Automatikus rendszer tema kovetes
+- **Responsive design** - Mobil es desktop optimalizalt
 - **Tailwind CSS** - Modern, gyors styling
-- **Vizuális feedback** - Drag hover, átmenetek, animációk
+- **Vizualis feedback** - Drag hover, atmenetek, animaciok
 
-## 🚀 Technológiai Stack
+## Technologiai Stack
 
 ### Frontend Framework
 - **Astro 5.16.8** - Static Site Generation
-- **React 19** - Interaktív komponensek (Islands Architecture)
-- **TypeScript** - Típusbiztos fejlesztés
+- **React 19** - Interaktiv komponensek (Islands Architecture)
+- **TypeScript** - Tipusbiztos fejlesztes
 
 ### Styling
 - **Tailwind CSS 4.1** - Utility-first CSS framework
-- **CSS Variables** - Dinamikus témaváltás
-- **Custom Design System** - Konzisztens színek és spacing
+- **CSS Variables** - Dinamikus temavaztas
+- **Custom Design System** - Konzisztens szinek es spacing
 
-### Képfeldolgozás
-- **browser-image-compression 2.0.2** - Kliens oldali képkonverzió
-- **FileReader API** - Base64 preview generálás
-- **Blob/File API** - Fájlkezelés és letöltés
+### Kepfeldolgozas
+- **browser-image-compression 2.0.2** - Kliens oldali kepkonverzio
+- **JSZip 3.10.1** - ZIP fajl generalas
+- **FileReader API** - Base64 preview generalas
+- **Blob/File API** - Fajlkezeles es letoltes
 
-### További Eszközök
-- **Alpine.js 3.15.3** - Könnyű interakciók
+### Tovabbi Eszkozok
+- **Alpine.js 3.15.3** - Konnyu interakciok
 - **Lenis 1.3.17** - Smooth scroll
-- **Sharp 0.34.5** - Opcionális szerver oldali képfeldolgozás
+- **Sharp 0.34.5** - Opcionalis szerver oldali kepfeldolgozas
 
-## 📁 Projekt Struktúra
+## Projekt Struktura
 
 ```
 astro-v1/
 ├── src/
 │   ├── components/
-│   │   ├── Counter.tsx          # Példa React komponens (később törölhető)
-│   │   └── FileUploader.tsx     # Fő képkonvertáló komponens
+│   │   ├── Counter.tsx          # Pelda React komponens (kesobb torolheto)
+│   │   └── FileUploader.tsx     # Fo kepkonvertalo komponens
 │   ├── lib/
-│   │   └── utils.ts             # Slug generálás és helper függvények
+│   │   └── utils.ts             # Slug generalas es helper fuggvenyek
 │   ├── pages/
-│   │   ├── index.astro          # Főoldal - FileUploader
+│   │   ├── index.astro          # Fooldal - FileUploader
 │   │   └── landing.astro        # Eredeti landing page
 │   └── styles/
-│       └── tailwind.css         # Tailwind konfiguráció
-├── public/                      # Statikus fájlok
-├── astro.config.mjs            # Astro konfiguráció
+│       └── tailwind.css         # Tailwind konfiguracio
+├── public/                      # Statikus fajlok
+├── astro.config.mjs            # Astro konfiguracio
 ├── package.json                # Dependencies
-├── tsconfig.json               # TypeScript konfiguráció
-└── tailwind.config.mjs         # Tailwind beállítások
+├── tsconfig.json               # TypeScript konfiguracio
+└── tailwind.config.mjs         # Tailwind beallitasok
 ```
 
-## 🛠️ Telepítés és Futtatás
+## Telepites es Futtatas
 
-### Előfeltételek
+### Elofeltelek
 - Node.js 18+ vagy 20+
 - npm vagy yarn package manager
 
-### 1. Dependencies telepítése
+### 1. Dependencies telepitese
 ```bash
 npm install
 ```
 
-### 2. Development szerver indítása
+### 2. Development szerver inditasa
 ```bash
 npm run dev
 ```
 
-Az alkalmazás elérhető: `http://localhost:4321`
+Az alkalmazas elerheto: `http://localhost:4321`
 
 ### 3. Production build
 ```bash
 npm run build
 ```
 
-### 4. Preview a build-ből
+### 4. Preview a build-bol
 ```bash
 npm run preview
 ```
 
-## 📦 Telepített Csomagok
+## Telepitett Csomagok
 
 ### Core Dependencies
 ```json
@@ -108,7 +111,8 @@ npm run preview
   "@astrojs/react": "^3.6.2",
   "react": "^19.0.0",
   "react-dom": "^19.0.0",
-  "browser-image-compression": "^2.0.2"
+  "browser-image-compression": "^2.0.2",
+  "jszip": "^3.10.1"
 }
 ```
 
@@ -132,7 +136,7 @@ npm run preview
 }
 ```
 
-## 🎨 Komponens Dokumentáció
+## Komponens Dokumentacio
 
 ### FileUploader Component
 
@@ -140,122 +144,133 @@ npm run preview
 
 **State Management:**
 ```typescript
-const [selectedFile, setSelectedFile] = useState<File | null>(null);
-const [imagePreview, setImagePreview] = useState<string | null>(null);
-const [convertedFile, setConvertedFile] = useState<File | null>(null);
-const [convertedPreview, setConvertedPreview] = useState<string | null>(null);
+interface FileItem {
+    id: string;
+    file: File;
+    preview: string;
+    status: 'pending' | 'converting' | 'done' | 'error';
+    convertedFile?: File;
+    slugifiedName?: string;
+}
+
+const [files, setFiles] = useState<FileItem[]>([]);
 const [isDragging, setIsDragging] = useState(false);
-const [slugifiedName, setSlugifiedName] = useState<string>('');
+const [isConverting, setIsConverting] = useState(false);
 ```
 
-**Főbb Függvények:**
+**Fobb Fuggvenyek:**
 
-#### `handleFileChange`
-- Input onchange és drag & drop kezelés
-- FileReader API használat preview generáláshoz
-- Base64 konverzió
+#### `addFiles`
+- Tobb fajl hozzaadasa (max 10)
+- FileReader API hasznalat preview generalshoz
+- Validacio (csak JPG/PNG)
 
-#### `handleConvert`
-- browser-image-compression beállításai:
-  - `maxWidthOrHeight: 1920` - Max képméret
-  - `useWebWorker: true` - Gyorsabb feldolgozás
-  - `fileType: 'image/webp'` - WebP konverzió
-  - `initialQuality: 0.9` - 90% minőség
-- Slug generálás és mentés
-- Konvertált preview létrehozása
+#### `handleConvertAll`
+- Batch konverzio szekvencialisan
+- Statusz frissites minden fajlhoz (pending -> converting -> done/error)
+- browser-image-compression beallitasai:
+  - `maxWidthOrHeight: 1920` - Max kepmeret
+  - `useWebWorker: true` - Gyorsabb feldolgozas
+  - `fileType: 'image/webp'` - WebP konverzio
+  - `initialQuality: 0.9` - 90% minoseg
 
-#### `handleDownload`
-- File objektum létrehozása slug-olt névvel
-- Blob URL generálás
-- Automatikus letöltés trigger
-- Memória cleanup
+#### `handleDownloadSingle`
+- Egyedi fajl letoltese slug-olt nevvel
 
-#### `handleDragOver`, `handleDrop`, `handleDragLeave`
-- Drag & Drop funkció implementáció
-- Vizuális feedback kezelés
+#### `handleDownloadZip`
+- JSZip hasznalata
+- Osszes konvertalt kep egy ZIP fajlban
+- Automatikus letoltes
 
-### Slug Generálás
+#### `removeFile`, `clearAll`
+- Fajl eltavolitas egyenkent vagy osszes torlese
+
+### Slug Generalas
 
 **Helye:** `src/lib/utils.ts`
 
-**Funkció:** `slugify(text: string): string`
+**Funkcio:** `slugify(text: string): string`
 
-**Működés:**
-1. Magyar ékezetek cseréje (á→a, é→e, stb.)
-2. Kisbetűsítés
-3. Speciális karakterek eltávolítása
-4. Szóközök → kötőjel
-5. Többszörös kötőjelek → egyszeres
-6. Kezdő/záró kötőjelek törlése
+**Mukodes:**
+1. Magyar ekezetek csereje (a->a, e->e, stb.)
+2. Kisbetusites
+3. Specialis karakterek eltavolitasa
+4. Szokozok -> kotojel
+5. Tobbszoros kotojelek -> egyszeres
+6. Kezdo/zaro kotojelek torlese
 
-**Példa:**
+**Pelda:**
 ```typescript
-slugify("Kéménytető Szigetelés 2024.jpg")
-// → "kemenyteto-szigeteles-2024"
+slugify("Kemenyteto Szigeteles 2024.jpg")
+// -> "kemenyteto-szigeteles-2024"
 ```
 
-## 🎯 Használat
+## Hasznalat
 
-### 1. Fájl feltöltés
-- Kattints a feltöltő területre VAGY
-- Húzd rá a képet (drag & drop)
+### 1. Fajlok feltoltese
+- Kattints a feltolto teruletre VAGY
+- Huzd ra a kepeket (drag & drop)
+- Max 10 kep egyszerre (fajlszamlalo: X/10)
 
-### 2. Előnézet
-- Eredeti kép megjelenik
-- Fájl adatok láthatók (név, méret, típus)
+### 2. Fajl lista
+- Minden kep megjelenik thumbnail-lal
+- Fajl adatok lathatoak (nev, meret)
+- Statusz jelzo: pending (varakozik)
 
-### 3. Konverzió
-- Kattints a "🔄 Konvertálás WebP-re" gombra
-- Várakozás (pár másodperc)
+### 3. Konverzio
+- Kattints a "Konvertalas (X kep)" gombra
+- Spinner animacio konverzio kozben
+- Statusz valtozik: converting -> done/error
 
-### 4. Eredmény
-- Konvertált kép megjelenik
-- SEO-barát fájlnév látható
-- Méretcsökkenés százalék mutatva
+### 4. Eredmeny
+- Zold keret jelzi a kesz fajlokat
+- SEO-barat fajlnev lathato
+- Meretcsokkenes szazalek mutatva
+- Osszesitett megtakaritas megjeleniitve
 
-### 5. Letöltés
-- Kattints a "💾 Letöltés" gombra
-- Fájl automatikusan letöltődik slug-olt névvel
+### 5. Letoltes
+- **Egyenkent:** Minden fajl mellett letoltes gomb
+- **ZIP-ben:** "ZIP letoltes (X kep)" gomb (2+ kep eseten)
 
-## 🔧 Konfiguráció
+## Konfiguracio
 
-### Képkonverzió beállítások
+### Kepkonverzio beallitasok
 
-`src/components/FileUploader.tsx` - `handleConvert` függvényben:
+`src/components/FileUploader.tsx` - `handleConvert` fuggvenyben:
 
 ```typescript
 const options = {
-  maxWidthOrHeight: 1920,      // Módosítható: max képméret
-  useWebWorker: true,          // Ajánlott: true
-  fileType: 'image/webp',      // WebP formátum
-  initialQuality: 0.9          // 0-1 között (0.9 = 90%)
+  maxWidthOrHeight: 1920,      // Modosithato: max kepmeret
+  useWebWorker: true,          // Ajanlott: true
+  fileType: 'image/webp',      // WebP formatum
+  initialQuality: 0.9          // 0-1 kozott (0.9 = 90%)
 };
 ```
 
-### Támogatott formátumok
+### Tamogatott formatumok
 
-Input `accept` attribútum:
+Input `accept` attributum:
 ```typescript
 accept="image/jpeg,image/png"
 ```
 
-Bővíthető további formátumokkal (pl. GIF, BMP).
+Bovitheto tovabbi formatumokkal (pl. GIF, BMP).
 
-## 🎨 Testreszabás
+## Testreszabas
 
-### Színek
+### Szinek
 
-CSS változók a `src/pages/index.astro` fájlban:
+CSS valtozok a `src/pages/index.astro` fajlban:
 
 ```css
 :root {
-  --color-primary: #6366F1;    /* Főszín (kék) */
-  --color-accent: #10B981;     /* Kiegészítő (zöld) */
+  --color-primary: #6366F1;    /* Foszin (kek) */
+  --color-accent: #10B981;     /* Kiegeszito (zold) */
   --color-danger: #EF4444;     /* Hiba/warning (piros) */
-  --color-bg: #FAFAFA;         /* Háttér */
-  --color-surface: #FFFFFF;    /* Kártyák háttere */
-  --color-text: #0F172A;       /* Szöveg */
-  --color-text-muted: #64748B; /* Halványabb szöveg */
+  --color-bg: #FAFAFA;         /* Hatter */
+  --color-surface: #FFFFFF;    /* Kartyak hattere */
+  --color-text: #0F172A;       /* Szoveg */
+  --color-text-muted: #64748B; /* Halvanyabb szoveg */
   --color-border: #E2E8F0;     /* Keretek */
 }
 ```
@@ -265,13 +280,13 @@ Dark mode automatikusan kezelt a `:root.dark` selectorral.
 ### Fontok
 
 ```css
---font-display: 'Outfit', sans-serif;  /* Címsorok */
---font-body: 'DM Sans', sans-serif;    /* Szövegtörzs */
+--font-display: 'Outfit', sans-serif;  /* Cimsorok */
+--font-body: 'DM Sans', sans-serif;    /* Szovegtorzs */
 ```
 
-## 🚀 Deployment
+## Deployment
 
-### Vercel (Ajánlott)
+### Vercel (Ajanlott)
 ```bash
 npm run build
 vercel --prod
@@ -289,68 +304,71 @@ npm run build
 # Publish dist/ folder
 ```
 
-## 📊 Teljesítmény
+## Teljesitmeny
 
-### Átlagos eredmények
-- **Fájlméret csökkenés:** 85-95%
-- **Konverziós idő:** 1-3 másodperc (kliens oldali)
-- **Támogatott képméret:** Max 10MB (módosítható)
-- **Max szélesség/magasság:** 1920px (módosítható)
+### Atlagos eredmenyek
+- **Fajlmeret csokkenes:** 85-95%
+- **Konverzios ido:** 1-3 masodperc (kliens oldali)
+- **Tamogatott kepmeret:** Max 10MB (modosithato)
+- **Max szelesseg/magassag:** 1920px (modosithato)
 
-### Példa
-- **Eredeti:** 434 KB (JPG, 1169×669)
-- **Konvertált:** 48 KB (WebP, 1169×669)
-- **Megtakarítás:** 89%
+### Pelda
+- **Eredeti:** 434 KB (JPG, 1169x669)
+- **Konvertalt:** 48 KB (WebP, 1169x669)
+- **Megtakaritas:** 89%
 
-## 🔮 Jövőbeli Fejlesztések
+## Jovobeli Fejlesztesek
 
-### Tervezett Funkciók
-- [ ] Batch feldolgozás (több fájl egyszerre)
-- [ ] ZIP letöltés (több kép esetén)
-- [ ] Egyedi méretezés UI (user által állítható)
-- [ ] Képarány választó (16:9, 4:3, négyzet, stb.)
-- [ ] Minőség slider (dinamikus beállítás)
-- [ ] Progress bar (konverzió alatt)
-- [ ] Képvágás/crop funkció
-- [ ] Vízjel hozzáadás
-- [ ] EXIF adatok megőrzése/törlése
-- [ ] Felhő storage integráció (optional)
+### Megvalositva (v1.1.0)
+- [x] Batch feldolgozas (max 10 kep egyszerre)
+- [x] ZIP letoltes (tobb kep eseten)
+- [x] Progress indikator (statusz jelzok)
 
-## 🐛 Hibakeresés
+### Tervezett Funkciok
+- [ ] Egyedi meretezés UI (user altal allithato)
+- [ ] Keparany valaszto (16:9, 4:3, negyzet, stb.)
+- [ ] Minoseg slider (dinamikus beallitas)
+- [ ] Kepvagas/crop funkcio
+- [ ] Vizjel hozzaadas
+- [ ] EXIF adatok megorzese/torlese
+- [ ] PWA (offline hasznalat)
+- [ ] Felho storage integracio (optional)
 
-### Konverzió nem működik
-- Ellenőrizd a böngésző konzolt (F12)
-- Támogatott formátum? (JPG/PNG)
-- Fájl méret alatt 10MB?
+## Hibakeresteés
 
-### Drag & Drop nem működik
-- `onDragOver` és `onDrop` event handlerek beállítva?
-- `preventDefault()` meghívva?
+### Konverzio nem mukodik
+- Ellenorizd a bongeszo konzolt (F12)
+- Tamogatott formatum? (JPG/PNG)
+- Fajl meret alatt 10MB?
 
-### Letöltés nem működik
-- Blob URL létrejött?
-- `link.download` attribútum beállítva?
-- Böngésző engedélyezi a letöltést?
+### Drag & Drop nem mukodik
+- `onDragOver` es `onDrop` event handlerek beallitva?
+- `preventDefault()` meghivva?
 
-## 📄 Licensz
+### Letoltes nem mukodik
+- Blob URL letrejott?
+- `link.download` attributum beallitva?
+- Bongeszo engedelyezi a letoltest?
 
-MIT License - Szabad felhasználás és módosítás.
+## Licensz
 
-## 👨‍💻 Fejlesztő
+MIT License - Szabad felhasznaalas es modositas.
 
-**Név:** Zsolt  
-**Szakértelem:** WordPress → Modern JavaScript Stack áttérés  
-**Stack:** Astro + React + TypeScript  
+## Fejleszto
 
-## 🙏 Köszönet
+**Nev:** Zsolt
+**Szakertelem:** WordPress -> Modern JavaScript Stack atteres
+**Stack:** Astro + React + TypeScript
 
-- Astro team - Kiváló SSG framework
-- Tailwind CSS - Gyors és rugalmas styling
-- browser-image-compression - Kliens oldali képfeldolgozás
-- Anthropic Claude - Fejlesztési támogatás
+## Koszonet
+
+- Astro team - Kivalo SSG framework
+- Tailwind CSS - Gyors es rugalmas styling
+- browser-image-compression - Kliens oldali kepfeldolgozas
+- Anthropic Claude - Fejlesztesi tamogatas
 
 ---
 
-**Verzió:** 1.0.0  
-**Utolsó frissítés:** 2026. január 11.  
-**Status:** ✅ Production Ready
+**Verzio:** 1.2.0
+**Utolso frissites:** 2026. januar 22.
+**Status:** Production Ready
