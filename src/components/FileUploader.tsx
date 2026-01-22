@@ -222,7 +222,7 @@ export default function FileUploader() {
     return (
         <div className="w-full">
             <div className="p-5 rounded-2xl" style={{
-                backgroundColor: 'var(--color-surface-elevated, var(--color-surface))',
+                backgroundColor: 'var(--color-surface)',
                 border: '2px solid var(--color-border)',
                 boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
             }}>
@@ -330,7 +330,7 @@ export default function FileUploader() {
                                         <button
                                             onClick={() => removeFile(item.id)}
                                             className="p-1.5 rounded-lg transition-all hover:opacity-80"
-                                            style={{ backgroundColor: 'var(--color-border)', color: 'var(--color-text-muted)' }}
+                                            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-text-muted)' }}
                                             title="Eltávolítás">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
@@ -366,7 +366,7 @@ export default function FileUploader() {
                                     onClick={handleConvertAll}
                                     disabled={isConverting}
                                     className="flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
-                                    style={{ background: 'var(--gradient-primary)', color: 'white' }}>
+                                    style={{ background: 'var(--color-accent)', color: 'white' }}>
                                     {isConverting ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
