@@ -8,6 +8,8 @@ interface FileItem {
     id: string;
     file: File;
     preview: string;
+    width: number;
+    height: number;
     status: 'pending' | 'converting' | 'done' | 'error';
     convertedFile?: File;
     slugifiedName?: string;
@@ -20,6 +22,7 @@ export default function FileUploader() {
     const [files, setFiles] = useState<FileItem[]>([]);
     const [isDragging, setIsDragging] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
+    const [quality, setQuality] = useState(90); // 50-100 skála
 
     // Egyedi ID generálás
     const generateId = () => Math.random().toString(36).substring(2, 9);
@@ -42,13 +45,20 @@ export default function FileUploader() {
             const reader = new FileReader();
             reader.onload = (e) => {
                 const preview = e.target?.result as string;
-                const newItem: FileItem = {
-                    id: generateId(),
-                    file,
-                    preview,
-                    status: 'pending'
+                // Kép dimenzió lekérése
+                const img = new Image();
+                img.onload = () => {
+                    const newItem: FileItem = {
+                        id: generateId(),
+                        file,
+                        preview,
+                        width: img.width,
+                        height: img.height,
+                        status: 'pending'
+                    };
+                    setFiles(prev => [...prev, newItem]);
                 };
-                setFiles(prev => [...prev, newItem]);
+                img.src = preview;
             };
             reader.readAsDataURL(file);
         });
@@ -115,7 +125,7 @@ export default function FileUploader() {
                     maxWidthOrHeight: 1920,
                     useWebWorker: true,
                     fileType: "image/webp" as const,
-                    initialQuality: 0.9,
+                    initialQuality: quality / 100,
                 };
 
                 const compressed = await imageCompression(item.file, options);
@@ -178,6 +188,13 @@ export default function FileUploader() {
         URL.revokeObjectURL(url);
     };
 
+    // Becsült WebP méret a minőség alapján
+    // quality 100% → ~70% of original, quality 50% → ~20% of original
+    const estimateWebpSize = (originalSize: number) => {
+        const ratio = 0.2 + (quality - 50) / 50 * 0.5;
+        return Math.round(originalSize * ratio);
+    };
+
     // Statisztikák
     const pendingCount = files.filter(f => f.status === 'pending').length;
     const doneCount = files.filter(f => f.status === 'done').length;
@@ -226,126 +243,177 @@ export default function FileUploader() {
                 border: '2px solid var(--color-border)',
                 boxShadow: '0 4px 24px rgba(0, 0, 0, 0.15)',
             }}>
-                {/* Feltöltő terület - kiemelt */}
-                <label
-                    onDragOver={handleDragOver}
-                    onDragLeave={handleDragLeave}
-                    onDrop={handleDrop}
-                    className={`flex flex-col items-center justify-center w-full rounded-xl cursor-pointer transition-all ${
-                        files.length >= MAX_FILES ? 'opacity-50 cursor-not-allowed' : ''
-                    }`}
-                    style={{
-                        border: isDragging ? '2px solid var(--color-accent)' : '2px dashed var(--color-accent)',
-                        backgroundColor: 'var(--color-bg)',
-                        padding: files.length > 0 ? '1rem' : '2rem 1.5rem',
-                        boxShadow: isDragging ? '0 0 20px rgba(255, 77, 48, 0.15)' : 'none',
-                    }}>
-                    <div className="flex flex-col items-center justify-center">
-                        <svg
-                            className={`mb-3 ${files.length > 0 ? 'w-6 h-6' : 'w-10 h-10'}`}
-                            style={{ color: isDragging ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                        </svg>
-                        <p className="text-sm" style={{ color: 'var(--color-text)' }}>
-                            <span className="font-semibold" style={{ color: 'var(--color-text)' }}>Kattints</span>
-                            <span style={{ color: 'var(--color-text-muted)' }}> vagy húzd ide</span>
-                        </p>
-                        <p className="text-xs mt-1" style={{ color: 'var(--color-text-muted)' }}>
-                            PNG, JPG • Max {MAX_FILES} fájl • {files.length}/{MAX_FILES}
-                        </p>
-                    </div>
-                    <input
-                        type="file"
-                        onChange={handleFileChange}
-                        accept="image/jpeg,image/png"
-                        multiple
-                        disabled={files.length >= MAX_FILES}
-                        className="hidden"
-                    />
-                </label>
+                {/* Feltöltő terület - csak ha nincs fájl */}
+                {files.length === 0 && (
+                    <label
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        className="flex flex-col items-center justify-center w-full rounded-xl cursor-pointer transition-all"
+                        style={{
+                            border: isDragging ? '2px solid var(--color-accent)' : '2px dashed var(--color-accent)',
+                            backgroundColor: 'var(--color-bg)',
+                            padding: '3rem 2rem',
+                            minHeight: '180px',
+                            boxShadow: isDragging ? '0 0 20px rgba(255, 77, 48, 0.15)' : 'none',
+                        }}>
+                        <div className="flex flex-col items-center justify-center">
+                            <svg
+                                className="mb-3 w-14 h-14"
+                                style={{ color: isDragging ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                            </svg>
+                            <p className="text-base" style={{ color: 'var(--color-text)' }}>
+                                <span className="font-semibold" style={{ color: 'var(--color-text)' }}>Kattints</span>
+                                <span style={{ color: 'var(--color-text-muted)' }}> vagy húzd ide a képeket</span>
+                            </p>
+                            <p className="text-sm mt-2" style={{ color: 'var(--color-text-muted)' }}>
+                                PNG, JPG • Max {MAX_FILES} fájl
+                            </p>
+                        </div>
+                        <input
+                            type="file"
+                            onChange={handleFileChange}
+                            accept="image/jpeg,image/png"
+                            multiple
+                            className="hidden"
+                        />
+                    </label>
+                )}
 
-                {/* Fájl lista */}
+                {/* Fájl lista - kompakt grid */}
                 {files.length > 0 && (
-                    <div className="mt-4 space-y-2">
+                    <div
+                        onDragOver={handleDragOver}
+                        onDragLeave={handleDragLeave}
+                        onDrop={handleDrop}
+                        className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"
+                        style={{
+                            padding: isDragging ? '0.5rem' : '0',
+                            border: isDragging ? '2px dashed var(--color-accent)' : 'none',
+                            borderRadius: '0.75rem',
+                        }}>
                         {files.map((item) => (
                             <div
                                 key={item.id}
-                                className="flex items-center gap-3 p-3 rounded-lg transition-all"
+                                className="relative group rounded-lg overflow-hidden transition-all"
                                 style={{
-                                    backgroundColor: 'var(--color-surface)',
+                                    backgroundColor: 'var(--color-bg)',
                                     border: item.status === 'done'
-                                        ? '1px solid var(--color-accent)'
+                                        ? '2px solid var(--color-accent)'
                                         : '1px solid var(--color-border)',
                                 }}>
-                                {/* Preview */}
-                                <div className="w-12 h-12 rounded-lg overflow-hidden shrink-0"
-                                    style={{ border: '1px solid var(--color-border)' }}>
+                                {/* Kis preview kép */}
+                                <div className="relative h-16 w-full overflow-hidden">
                                     <img src={item.preview} alt="" className="w-full h-full object-cover" />
-                                </div>
-
-                                {/* Info */}
-                                <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium truncate" style={{ color: 'var(--color-text)' }}>
-                                        {item.status === 'done' ? item.slugifiedName : item.file.name}
-                                    </p>
-                                    <div className="flex items-center gap-2 text-xs" style={{ color: 'var(--color-text-muted)' }}>
-                                        <span>{Math.round(item.file.size / 1024)} KB</span>
-                                        {item.status === 'done' && item.convertedFile && (
-                                            <>
-                                                <span>→</span>
-                                                <span style={{ color: 'var(--color-accent)' }}>
-                                                    {Math.round(item.convertedFile.size / 1024)} KB
-                                                </span>
-                                                <span className="font-semibold px-1.5 py-0.5 rounded text-xs"
-                                                    style={{ backgroundColor: 'var(--color-accent)', color: 'white' }}>
-                                                    -{Math.round((1 - item.convertedFile.size / item.file.size) * 100)}%
-                                                </span>
-                                            </>
-                                        )}
+                                    {/* Státusz ikon */}
+                                    <div className="absolute top-1 left-1">
+                                        <StatusIcon status={item.status} />
                                     </div>
-                                </div>
-
-                                {/* Státusz / Akciók */}
-                                <div className="flex items-center gap-2 shrink-0">
-                                    <StatusIcon status={item.status} />
-
-                                    {item.status === 'done' && (
-                                        <button
-                                            onClick={() => handleDownloadSingle(item)}
-                                            className="p-1.5 rounded-lg transition-all hover:opacity-80"
-                                            style={{ backgroundColor: 'var(--color-accent)', color: 'white' }}
-                                            title="Letöltés">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                                                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                                            </svg>
-                                        </button>
-                                    )}
-
+                                    {/* Törlés gomb hover-re */}
                                     {item.status !== 'converting' && (
                                         <button
                                             onClick={() => removeFile(item.id)}
-                                            className="p-1.5 rounded-lg transition-all hover:opacity-80"
-                                            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-text-muted)' }}
+                                            className="absolute top-1 right-1 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                                            style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'white' }}
                                             title="Eltávolítás">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>
                                         </button>
                                     )}
                                 </div>
+
+                                {/* Info + letöltés */}
+                                <div className="p-2" style={{ backgroundColor: 'var(--color-surface)' }}>
+                                    <p className="text-xs font-medium truncate" style={{ color: 'var(--color-text)' }}>
+                                        {item.status === 'done' ? item.slugifiedName : item.file.name}
+                                    </p>
+                                    <div className="text-[11px] mt-1" style={{ color: 'var(--color-text-muted)' }}>
+                                        <div className="flex items-center justify-between">
+                                            <span>{Math.round(item.file.size / 1024)} KB</span>
+                                            {item.status === 'pending' && (
+                                                <span className="font-medium" style={{ color: 'var(--color-primary)' }}>
+                                                    →~{Math.round(estimateWebpSize(item.file.size) / 1024)} KB
+                                                </span>
+                                            )}
+                                            {item.status === 'done' && item.convertedFile && (
+                                                <span className="font-bold" style={{ color: 'var(--color-accent)' }}>
+                                                    -{Math.round((1 - item.convertedFile.size / item.file.size) * 100)}%
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div>{item.width}×{item.height}</div>
+                                    </div>
+                                    {item.status === 'done' && (
+                                        <button
+                                            onClick={() => handleDownloadSingle(item)}
+                                            className="w-full mt-1.5 p-1.5 rounded text-xs font-medium"
+                                            style={{ background: 'var(--gradient-primary)', color: 'white' }}>
+                                            Letöltés
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         ))}
+                        {/* Új kép hozzáadása gomb */}
+                        {files.length < MAX_FILES && (
+                            <label className="flex flex-col items-center justify-center rounded-lg cursor-pointer transition-all hover:opacity-80"
+                                style={{
+                                    backgroundColor: 'var(--color-bg)',
+                                    border: '2px dashed var(--color-border)',
+                                    minHeight: '100px',
+                                }}>
+                                <svg className="w-6 h-6 mb-1" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>
+                                    {files.length}/{MAX_FILES}
+                                </span>
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    accept="image/jpeg,image/png"
+                                    multiple
+                                    className="hidden"
+                                />
+                            </label>
+                        )}
                     </div>
                 )}
 
                 {/* Akciók */}
                 {files.length > 0 && (
                     <div className="mt-4 pt-4 space-y-3" style={{ borderTop: '1px solid var(--color-border)' }}>
+                        {/* Minőség csúszka */}
+                        {pendingCount > 0 && (
+                            <div className="flex items-center gap-4 p-3 rounded-lg"
+                                style={{ backgroundColor: 'var(--color-bg)' }}>
+                                <label className="text-sm font-medium whitespace-nowrap" style={{ color: 'var(--color-text)' }}>
+                                    Minőség:
+                                </label>
+                                <input
+                                    type="range"
+                                    min="50"
+                                    max="100"
+                                    value={quality}
+                                    onChange={(e) => setQuality(Number(e.target.value))}
+                                    disabled={isConverting}
+                                    className="flex-1 h-2 rounded-lg appearance-none cursor-pointer disabled:opacity-50"
+                                    style={{
+                                        background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-accent) ${(quality - 50) * 2}%, var(--color-border) ${(quality - 50) * 2}%)`,
+                                    }}
+                                />
+                                <span className="text-sm font-bold min-w-12 text-right" style={{ color: 'var(--color-accent)' }}>
+                                    {quality}%
+                                </span>
+                            </div>
+                        )}
+
                         {/* Összesített statisztika */}
                         {doneCount > 0 && (
                             <div className="flex items-center justify-between text-sm p-3 rounded-lg"
@@ -366,7 +434,7 @@ export default function FileUploader() {
                                     onClick={handleConvertAll}
                                     disabled={isConverting}
                                     className="flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90 disabled:opacity-50"
-                                    style={{ background: 'var(--color-accent)', color: 'white' }}>
+                                    style={{ background: 'var(--gradient-primary)', color: 'white' }}>
                                     {isConverting ? (
                                         <span className="flex items-center justify-center gap-2">
                                             <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />

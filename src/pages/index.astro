@@ -1,7 +1,7 @@
 ---
 import "../styles/tailwind.css";
 import FileUploader from "../components/FileUploader"
-import Logo from "../assets/wklogo.svg"
+
 
 
 ---
@@ -15,43 +15,67 @@ import Logo from "../assets/wklogo.svg"
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-      :root {
-        --color-primary: #0891B2;
-        --color-accent: #0891B2;
-        --color-success: #10B981;
-        --color-danger: #EF4444;
-        --color-bg: #FAFAFA;
-        --color-surface: #FFFFFF;
-        --color-text: #0F172A;
-        --color-text-muted: #64748B;
-        --color-border: #E2E8F0;
-        --font-display: 'Manrope', sans-serif;
-        --font-body: 'Manrope', sans-serif;
-        --radius: 16px;
-        --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        --gradient-primary: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
-        --gradient-accent: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
-        --gradient-success: linear-gradient(135deg, #10B981 0%, #34D399 100%);
-      }
+     :root {
+  /* LIGHT MODE - Tiszta, világos alapok */
+  --color-primary: #0891b2; /* Mélyebb cián a kontraszt miatt fehér háttéren */
+  --color-accent: #06b6d4;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-bg: #f8fafc; /* Slate-50: Nem teljesen fehér, szemkímélőbb */
+  --color-surface: #ffffff;
+  --color-text: #0f172a; /* Slate-900 */
+  --color-text-muted: #64748b; /* Slate-500 */
+  --color-border: #e2e8f0; /* Slate-200 */
 
-      :root.dark {
-        --color-primary: #939393;
-        --color-accent: #0891B2;
-        --color-success: #0891B2;
-        --color-danger: #F87171;
-        --color-bg: #0A0E15;
-        --color-surface: #212631;
-        --color-text: #F1F5F9;
-        --color-text-muted: #939393;
-        --color-border: #4a4a4a;
-        --color-surface-elevated: #313131;
-        --shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-        --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.5), 0 10px 10px -5px rgba(0, 0, 0, 0.3);
-        --gradient-primary: linear-gradient(135deg, #4a4a4a 0%, #313131 100%);
-        --gradient-accent: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
-        --gradient-success: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
-      }
+  /* Fontok és formák */
+  --font-display: 'Manrope', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --radius: 16px;
+
+  /* Árnyékok */
+  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+  /* Gradiensek */
+  --gradient-primary: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
+  --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
+  --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+}
+
+:root.dark {
+  /* DARK MODE - Prémium "Slate" szürke és Neon Aqua */
+
+  /* Itt a Primary-t világosabbra (Neon) állítottam, hogy "világítson" a sötétben */
+  --color-primary: #22d3ee; /* Cyan-400 */
+  --color-accent: #67e8f9; /* Cyan-300 */
+
+  /* Visszaállítottam a helyes színeket (az eredetiben a success is kék volt) */
+  --color-success: #34d399;
+  --color-danger: #f87171;
+
+  /* A háttér: Mély, kékes-szürke (Slate) */
+  --color-bg: #0f172a; /* Slate-900 */
+  --color-surface: #1e293b; /* Slate-800 - Kicsit világosabb a kártyáknak */
+  --color-surface-elevated: #334155; /* Slate-700 - Moduloknak/Hovernek */
+
+  /* Szöveg és keretek */
+  --color-text: #f1f5f9; /* Slate-100 */
+  --color-text-muted: #94a3b8; /* Slate-400 */
+  --color-border: #334155; /* Slate-700 - Finom elválasztás */
+
+  /* Árnyékok - Sötétebbek és erősebbek */
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5),
+    0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6),
+    0 10px 10px -5px rgba(0, 0, 0, 0.4);
+
+  /* Gradiensek - Sötét módhoz igazítva */
+  /* A primary gradiens most az Aqua-ból indul, nem szürkéből */
+  --gradient-primary: linear-gradient(135deg, #0e7490 0%, #22d3ee 100%);
+  --gradient-accent: linear-gradient(135deg, #0891b2 0%, #67e8f9 100%);
+  --gradient-success: linear-gradient(135deg, #059669 0%, #34d399 100%);
+}
 
 
       /* Smooth transitions for theme changes */
@@ -435,55 +459,44 @@ import Logo from "../assets/wklogo.svg"
   </head>
   <body class="min-h-full antialiased" style="background-color: var(--color-bg); color: var(--color-text); font-family: var(--font-body);">
     <!-- Navigation -->
-    <nav class="absolute  w-full top-0 z-50" style="" x-data="{ mobileMenuOpen: false }">
+    <nav class="absolute w-full top-0 z-50" x-data="{ menuOpen: false }">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-end h-16">
-         
+        <div class="flex items-center justify-end h-16 gap-3">
+          <!-- Theme Toggle -->
+          <div id="theme-toggle" class="theme-toggle"></div>
 
-          <!-- Desktop Nav -->
-          <div class="hidden md:flex items-center gap-6">
-            <a href="#features" class="nav-link text-sm font-semibold relative px-3 py-2 rounded-lg" style="color: var(--color-text);">
-              Funkciók
-            </a>
-            <a href="#benefits" class="nav-link text-sm font-semibold relative px-3 py-2 rounded-lg" style="color: var(--color-text);">
-              Előnyök
-            </a>
-            <a href="#faq" class="nav-link text-sm font-semibold relative px-3 py-2 rounded-lg" style="color: var(--color-text);">
-              GYIK
-            </a>
-            <div id="theme-toggle" class="theme-toggle ml-2"></div>
+          <!-- Menu Button -->
+          <div class="relative">
+            <button
+              @click="menuOpen = !menuOpen"
+              class="flex flex-col gap-1.5 w-10 h-10 items-center justify-center rounded-lg hover:opacity-70 transition-opacity"
+              style="background-color: var(--color-surface); border: 1px solid var(--color-border);"
+            >
+              <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'rotate-45 translate-y-2': menuOpen }"></span>
+              <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'opacity-0': menuOpen }"></span>
+              <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ '-rotate-45 -translate-y-2': menuOpen }"></span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              x-show="menuOpen"
+              x-transition:enter="transition ease-out duration-200"
+              x-transition:enter-start="opacity-0 scale-95 -translate-y-2"
+              x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+              x-transition:leave="transition ease-in duration-150"
+              x-transition:leave-start="opacity-100 scale-100"
+              x-transition:leave-end="opacity-0 scale-95"
+              @click.away="menuOpen = false"
+              class="absolute right-0 mt-2 w-48 rounded-xl overflow-hidden"
+              style="background-color: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow-lg);"
+            >
+              <div class="py-2">
+                <a href="#features" @click="menuOpen = false" class="block px-4 py-2.5 text-sm font-medium transition-colors hover:opacity-70" style="color: var(--color-text);">Funkciók</a>
+                <a href="#benefits" @click="menuOpen = false" class="block px-4 py-2.5 text-sm font-medium transition-colors hover:opacity-70" style="color: var(--color-text);">Előnyök</a>
+                <a href="#faq" @click="menuOpen = false" class="block px-4 py-2.5 text-sm font-medium transition-colors hover:opacity-70" style="color: var(--color-text);">GYIK</a>
+              </div>
+            </div>
           </div>
-
-          <!-- Mobile Menu Button -->
-          <button
-            @click="mobileMenuOpen = !mobileMenuOpen"
-            class="md:hidden flex flex-col gap-1.5 w-10 h-10 items-center justify-center rounded-lg hover:opacity-70 transition-opacity"
-            style="background-color: var(--color-surface);"
-          >
-            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'rotate-45 translate-y-2': mobileMenuOpen }"></span>
-            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ 'opacity-0': mobileMenuOpen }"></span>
-            <span class="w-5 h-0.5 transition-all" style="background-color: var(--color-text);" :class="{ '-rotate-45 -translate-y-2': mobileMenuOpen }"></span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Mobile Menu -->
-      <div
-        x-show="mobileMenuOpen"
-        x-transition:enter="transition ease-out duration-200"
-        x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-150"
-        x-transition:leave-start="opacity-100 scale-100"
-        x-transition:leave-end="opacity-0 scale-95"
-        @click.away="mobileMenuOpen = false"
-        class="md:hidden absolute left-0 right-0 px-4 pb-4"
-        style="background-color: var(--color-bg); border-bottom: 1px solid var(--color-border); z-index: 100; top: 100%; transform-origin: top center;"
-      >
-        <div class="flex flex-col gap-2 py-4">
-          <a href="#features" @click="mobileMenuOpen = false" class="px-4 py-3 rounded-lg text-sm font-medium transition-colors" style="background-color: var(--color-surface); color: var(--color-text);">Funkciók</a>
-          <a href="#benefits" @click="mobileMenuOpen = false" class="px-4 py-3 rounded-lg text-sm font-medium transition-colors" style="background-color: var(--color-surface); color: var(--color-text);">Előnyök</a>
-          <a href="#faq" @click="mobileMenuOpen = false" class="px-4 py-3 rounded-lg text-sm font-medium transition-colors" style="background-color: var(--color-surface); color: var(--color-text);">GYIK</a>
         </div>
       </div>
     </nav>
@@ -493,55 +506,21 @@ import Logo from "../assets/wklogo.svg"
       <!-- Particle animation canvas -->
       <canvas id="hero-particles"></canvas>
 
-      <div class="max-w-7xl mx-auto hero-container">
-        <div class="grid lg:grid-cols-2 gap-12 items-start">
-          <!-- Left: Text Content -->
-          <div>
-            <div class="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-4 animate-fade-in-up" style="background-color: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow); border: 1px solid var(--color-border);">
-              Kliens oldali feldolgozás
-            </div>
-
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 animate-fade-in-up delay-100" style="font-family: var(--font-display); color: var(--color-text); line-height: 1.2;">
-              WebP Képkonvertáló
-            </h1>
-
-            <p class="text-base md:text-lg mb-6 animate-fade-in-up delay-200 leading-relaxed" style="color: var(--color-text-muted);">
-              Képek WebP-re konvertálása böngészőből. Automatikus optimalizálás, SEO-barát fájlnevek, 100% privát.
-            </p>
-
-            <!-- Key features list -->
-            <ul class="space-y-2 animate-fade-in-up delay-300">
-              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span>85-95% fájlméret csökkenés</span>
-              </li>
-              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span>Magyar ékezetek és szóközök kezelése</span>
-              </li>
-              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span>Képek nem hagyják el a gépedet</span>
-              </li>
-              <li class="flex items-center gap-2 text-sm" style="color: var(--color-text-muted);">
-                <svg class="w-4 h-4 shrink-0" style="color: var(--color-primary);" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                </svg>
-                <span>Akár 10 kép egyszerre, ZIP letöltés</span>
-              </li>
-            </ul>
+      <div class="max-w-4xl mx-auto hero-container">
+        <!-- Kompakt cím -->
+        <div class="text-center mb-8">
+          <div class="inline-block px-4 py-2 rounded-full text-xs font-semibold mb-4 animate-fade-in-up" style="background-color: var(--color-surface); color: var(--color-primary); box-shadow: var(--shadow); border: 1px solid var(--color-border);">
+            100% privát, kliens oldali feldolgozás
           </div>
 
-          <!-- Right: FileUploader Component -->
-          <div class="animate-fade-in-up delay-400">
-            <FileUploader client:load />
-          </div>
+          <h1 class="text-3xl md:text-4xl font-bold animate-fade-in-up delay-100" style="font-family: var(--font-display); color: var(--color-text); line-height: 1.2;">
+            WebP Képkonvertáló
+          </h1>
+        </div>
+
+        <!-- FileUploader - teljes szélesség -->
+        <div class="animate-fade-in-up delay-200">
+          <FileUploader client:load />
         </div>
       </div>
     </section>
@@ -1046,6 +1025,15 @@ import Logo from "../assets/wklogo.svg"
           resizeCanvas();
           init();
         });
+
+        // ResizeObserver a hero méretváltozáshoz (pl. FileUploader tartalom változik)
+        const resizeObserver = new ResizeObserver(() => {
+          resizeCanvas();
+          init();
+        });
+        if (hero) {
+          resizeObserver.observe(hero);
+        }
 
         // Initialize
         resizeCanvas();
