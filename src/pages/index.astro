@@ -15,68 +15,57 @@ import FileUploader from "../components/FileUploader"
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <style>
-     :root {
-  /* LIGHT MODE - Tiszta, világos alapok */
-  --color-primary: #0891b2; /* Mélyebb cián a kontraszt miatt fehér háttéren */
-  --color-accent: #06b6d4;
-  --color-success: #10b981;
-  --color-danger: #ef4444;
-  --color-bg: #f8fafc; /* Slate-50: Nem teljesen fehér, szemkímélőbb */
-  --color-surface: #ffffff;
-  --color-text: #0f172a; /* Slate-900 */
-  --color-text-muted: #64748b; /* Slate-500 */
-  --color-border: #e2e8f0; /* Slate-200 */
+    :root {
+  /* LIGHT MODE - Szemkímélő "Soft Slate" */
+  
+  /* Színek: Kicsit mélyebbek, hogy a szürke alapon is jól látszódjanak */
+  --color-primary: #0e7490; /* Cyan-700: Sötétebb, elegánsabb kék */
+  --color-accent: #0891b2;
+  --color-success: #059669; /* Emerald-600 */
+  --color-danger: #dc2626;  /* Red-600 */
 
-  /* Fontok és formák */
+  /* HÁTTÉR ÉS FELÜLETEK - A lényeg itt van: */
+  --color-bg: #e2e8f0;      /* Slate-200: Határozott világosszürke háttér */
+  --color-surface: #f1f5f9; /* Slate-100: A kártyák sem fehérek, hanem törtfehérek */
+  
+  /* Szöveg */
+  --color-text: #1e293b;       /* Slate-800: Nem koromfekete, hanem mélyszürke */
+  --color-text-muted: #64748b; /* Slate-500 */
+  --color-border: #cbd5e1;     /* Slate-300: Kicsit sötétebb keret a szürke kártyákhoz */
+
+  /* Egyéb */
   --font-display: 'Manrope', sans-serif;
   --font-body: 'Manrope', sans-serif;
   --radius: 16px;
 
-  /* Árnyékok */
-  --shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* Árnyék: Mivel a háttér sötétebb, az árnyéknak is erősebbnek kell lennie picit */
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 
   /* Gradiensek */
-  --gradient-primary: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);
-  --gradient-accent: linear-gradient(135deg, #06b6d4 0%, #22d3ee 100%);
-  --gradient-success: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-primary: linear-gradient(135deg, #0e7490 0%, #0891b2 100%);
+  --gradient-accent: linear-gradient(135deg, #0891b2 0%, #22d3ee 100%);
+  --gradient-success: linear-gradient(135deg, #059669 0%, #34d399 100%);
 }
 
 :root.dark {
-  /* DARK MODE - Prémium "Slate" szürke és Neon Aqua */
-
-  /* Itt a Primary-t világosabbra (Neon) állítottam, hogy "világítson" a sötétben */
-  --color-primary: #22d3ee; /* Cyan-400 */
-  --color-accent: #67e8f9; /* Cyan-300 */
-
-  /* Visszaállítottam a helyes színeket (az eredetiben a success is kék volt) */
+  /* DARK MODE - Ez maradt a szép mély/neon verzió */
+  --color-primary: #22d3ee;
+  --color-accent: #67e8f9;
   --color-success: #34d399;
   --color-danger: #f87171;
-
-  /* A háttér: Mély, kékes-szürke (Slate) */
-  --color-bg: #0f172a; /* Slate-900 */
-  --color-surface: #1e293b; /* Slate-800 - Kicsit világosabb a kártyáknak */
-  --color-surface-elevated: #334155; /* Slate-700 - Moduloknak/Hovernek */
-
-  /* Szöveg és keretek */
-  --color-text: #f1f5f9; /* Slate-100 */
-  --color-text-muted: #94a3b8; /* Slate-400 */
-  --color-border: #334155; /* Slate-700 - Finom elválasztás */
-
-  /* Árnyékok - Sötétebbek és erősebbek */
-  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5),
-    0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6),
-    0 10px 10px -5px rgba(0, 0, 0, 0.4);
-
-  /* Gradiensek - Sötét módhoz igazítva */
-  /* A primary gradiens most az Aqua-ból indul, nem szürkéből */
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-elevated: #334155;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-border: #334155;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.4);
   --gradient-primary: linear-gradient(135deg, #0e7490 0%, #22d3ee 100%);
   --gradient-accent: linear-gradient(135deg, #0891b2 0%, #67e8f9 100%);
   --gradient-success: linear-gradient(135deg, #059669 0%, #34d399 100%);
 }
-
 
       /* Smooth transitions for theme changes */
       * {
