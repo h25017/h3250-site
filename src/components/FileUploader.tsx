@@ -429,14 +429,14 @@ export default function FileUploader() {
                                             </svg>
                                         </button>
                                     )}
-                                    {/* Előnézet gomb pending képekhez */}
+                                    {/* Előnézet gomb pending képekhez - mindig látható */}
                                     {item.status === 'pending' && (
                                         <button
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 openPreviewModal(item.id);
                                             }}
-                                            className="absolute bottom-1 right-1 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                                            className="absolute bottom-1 right-1 p-1 rounded transition-all hover:scale-110"
                                             style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'white' }}
                                             title="Előnézet">
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -530,6 +530,20 @@ export default function FileUploader() {
                                 <span className="text-sm font-bold min-w-12 text-right" style={{ color: 'var(--color-accent)' }}>
                                     {quality}%
                                 </span>
+                                <button
+                                    onClick={() => {
+                                        const firstPending = files.find(f => f.status === 'pending');
+                                        if (firstPending) openPreviewModal(firstPending.id);
+                                    }}
+                                    disabled={isConverting}
+                                    className="p-2 rounded-lg transition-all hover:opacity-80 disabled:opacity-50"
+                                    style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+                                    title="Előnézet">
+                                    <svg className="w-4 h-4" style={{ color: 'var(--color-text)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                    </svg>
+                                </button>
                             </div>
                         )}
 
