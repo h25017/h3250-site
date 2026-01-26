@@ -1,7 +1,8 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
+import { createPortal } from "react-dom";
 import imageCompression from "browser-image-compression";
 import JSZip from "jszip";
-import { slugify } from "../lib/utils";
+import { slugify, debounce } from "../lib/utils";
 
 // Fájl állapot típus
 interface FileItem {
@@ -14,6 +15,11 @@ interface FileItem {
     convertedFile?: File;
     slugifiedName?: string;
     error?: string;
+    // Preview mezők
+    previewCompressed?: string;
+    previewSize?: number;
+    previewQuality?: number;
+    previewGenerating?: boolean;
 }
 
 const MAX_FILES = 10;
@@ -23,6 +29,12 @@ export default function FileUploader() {
     const [isDragging, setIsDragging] = useState(false);
     const [isConverting, setIsConverting] = useState(false);
     const [quality, setQuality] = useState(90); // 50-100 skála
+
+    // Preview modal state
+    const [previewModalOpen, setPreviewModalOpen] = useState(false);
+    const [previewingFileId, setPreviewingFileId] = useState<string | null>(null);
+    const [previewQuality, setPreviewQuality] = useState(90);
+    const [sliderPosition, setSliderPosition] = useState(50);
 
     // Egyedi ID generálás
     const generateId = () => Math.random().toString(36).substring(2, 9);
@@ -195,6 +207,97 @@ export default function FileUploader() {
         return Math.round(originalSize * ratio);
     };
 
+    // Blob → Data URL konverzió
+    const blobToDataUrl = (blob: Blob): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    };
+
+    // Preview generálás
+    const generatePreview = async (fileItem: FileItem, q: number) => {
+        const options = {
+            maxWidthOrHeight: 800,
+            useWebWorker: true,
+            fileType: "image/webp" as const,
+            initialQuality: q / 100,
+        };
+        const compressed = await imageCompression(fileItem.file, options);
+        const dataUrl = await blobToDataUrl(compressed);
+        return { dataUrl, size: compressed.size };
+    };
+
+    // Debounce-olt preview újragenerálás
+    const debouncedRegenerate = useMemo(
+        () => debounce(async (fileId: string, q: number) => {
+            const file = files.find(f => f.id === fileId);
+            if (!file) return;
+
+            setFiles(prev => prev.map(f =>
+                f.id === fileId ? { ...f, previewGenerating: true } : f
+            ));
+
+            try {
+                const { dataUrl, size } = await generatePreview(file, q);
+                setFiles(prev => prev.map(f =>
+                    f.id === fileId ? {
+                        ...f,
+                        previewCompressed: dataUrl,
+                        previewSize: size,
+                        previewQuality: q,
+                        previewGenerating: false
+                    } : f
+                ));
+            } catch {
+                setFiles(prev => prev.map(f =>
+                    f.id === fileId ? { ...f, previewGenerating: false } : f
+                ));
+            }
+        }, 300),
+        [files]
+    );
+
+    // Preview modal megnyitása
+    const openPreviewModal = async (fileId: string) => {
+        const file = files.find(f => f.id === fileId);
+        if (!file || file.status !== 'pending') return;
+
+        setPreviewingFileId(fileId);
+        setPreviewQuality(quality);
+        setSliderPosition(50);
+        setPreviewModalOpen(true);
+
+        if (!file.previewCompressed || file.previewQuality !== quality) {
+            debouncedRegenerate(fileId, quality);
+        }
+    };
+
+    // Preview modal bezárása
+    const closePreviewModal = () => {
+        setPreviewModalOpen(false);
+        setPreviewingFileId(null);
+    };
+
+    // Preview minőség változás
+    const handlePreviewQualityChange = (newQuality: number) => {
+        setPreviewQuality(newQuality);
+        if (previewingFileId) {
+            debouncedRegenerate(previewingFileId, newQuality);
+        }
+    };
+
+    // Minőség alkalmazása
+    const applyPreviewQuality = () => {
+        setQuality(previewQuality);
+        closePreviewModal();
+    };
+
+    // Preview file getter
+    const previewingFile = previewingFileId ? files.find(f => f.id === previewingFileId) : null;
+
     // Statisztikák
     const pendingCount = files.filter(f => f.status === 'pending').length;
     const doneCount = files.filter(f => f.status === 'done').length;
@@ -323,6 +426,22 @@ export default function FileUploader() {
                                             title="Eltávolítás">
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    )}
+                                    {/* Előnézet gomb pending képekhez */}
+                                    {item.status === 'pending' && (
+                                        <button
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                openPreviewModal(item.id);
+                                            }}
+                                            className="absolute bottom-1 right-1 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                                            style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'white' }}
+                                            title="Előnézet">
+                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
                                         </button>
                                     )}
@@ -470,6 +589,181 @@ export default function FileUploader() {
                     </div>
                 )}
             </div>
+
+            {/* Preview Modal - Portal */}
+            {previewModalOpen && previewingFile && createPortal(
+                <div
+                    className="fixed inset-0 z-9999 flex items-center justify-center p-4"
+                    style={{ backgroundColor: 'rgba(0, 0, 0, 0.85)' }}
+                    onClick={closePreviewModal}
+                >
+                    <div
+                        className="w-full max-w-3xl max-h-[90vh] overflow-auto rounded-2xl"
+                        style={{
+                            backgroundColor: 'var(--color-surface)',
+                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                        }}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        {/* Header */}
+                        <div className="flex items-center justify-between p-4 border-b"
+                            style={{ borderColor: 'var(--color-border)' }}>
+                            <h3 className="text-lg font-bold" style={{ color: 'var(--color-text)' }}>
+                                Minőség előnézet
+                            </h3>
+                            <button
+                                onClick={closePreviewModal}
+                                className="p-2 rounded hover:opacity-70"
+                                style={{ color: 'var(--color-text-muted)' }}>
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        {/* Before/After Slider */}
+                        <div className="p-4">
+                            <div
+                                className="relative w-full aspect-video rounded-lg overflow-hidden cursor-ew-resize select-none"
+                                style={{ backgroundColor: 'var(--color-bg)' }}
+                                onMouseMove={(e) => {
+                                    if (e.buttons !== 1) return;
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                                    setSliderPosition((x / rect.width) * 100);
+                                }}
+                                onMouseDown={(e) => {
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+                                    setSliderPosition((x / rect.width) * 100);
+                                }}
+                                onTouchMove={(e) => {
+                                    const touch = e.touches[0];
+                                    const rect = e.currentTarget.getBoundingClientRect();
+                                    const x = Math.max(0, Math.min(touch.clientX - rect.left, rect.width));
+                                    setSliderPosition((x / rect.width) * 100);
+                                }}
+                            >
+                                {/* Tömörített kép (háttér) */}
+                                {previewingFile.previewGenerating ? (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <div className="w-10 h-10 border-3 border-t-transparent rounded-full animate-spin"
+                                            style={{ borderColor: 'var(--color-primary)', borderTopColor: 'transparent' }} />
+                                    </div>
+                                ) : previewingFile.previewCompressed ? (
+                                    <img
+                                        src={previewingFile.previewCompressed}
+                                        alt="Tömörített"
+                                        className="absolute inset-0 w-full h-full object-contain"
+                                        draggable={false}
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <span style={{ color: 'var(--color-text-muted)' }}>Generálás...</span>
+                                    </div>
+                                )}
+
+                                {/* Eredeti kép (felül, clip-path-tal vágva) */}
+                                <img
+                                    src={previewingFile.preview}
+                                    alt="Eredeti"
+                                    className="absolute inset-0 w-full h-full object-contain"
+                                    style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+                                    draggable={false}
+                                />
+
+                                {/* Osztóvonal */}
+                                <div
+                                    className="absolute top-0 bottom-0 w-1"
+                                    style={{
+                                        left: `${sliderPosition}%`,
+                                        transform: 'translateX(-50%)',
+                                        backgroundColor: 'white',
+                                        boxShadow: '0 0 8px rgba(0,0,0,0.5)',
+                                    }}
+                                >
+                                    {/* Fogantyú */}
+                                    <div
+                                        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full flex items-center justify-center"
+                                        style={{ backgroundColor: 'white', boxShadow: '0 2px 8px rgba(0,0,0,0.3)' }}
+                                    >
+                                        <svg className="w-4 h-4" style={{ color: 'var(--color-text)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 9l4-4 4 4m0 6l-4 4-4-4"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                {/* Címkék */}
+                                <div className="absolute top-2 left-2 px-2 py-1 rounded text-xs font-medium"
+                                    style={{ backgroundColor: 'rgba(0,0,0,0.7)', color: 'white' }}>
+                                    Eredeti
+                                </div>
+                                <div className="absolute top-2 right-2 px-2 py-1 rounded text-xs font-medium"
+                                    style={{ backgroundColor: 'rgba(0,0,0,0.7)', color: 'white' }}>
+                                    WebP {previewQuality}%
+                                </div>
+                            </div>
+
+                            {/* Méret összehasonlítás */}
+                            <div className="flex justify-between mt-3 text-sm">
+                                <span style={{ color: 'var(--color-text-muted)' }}>
+                                    Eredeti: <strong style={{ color: 'var(--color-text)' }}>{Math.round(previewingFile.file.size / 1024)} KB</strong>
+                                </span>
+                                <span style={{ color: 'var(--color-text-muted)' }}>
+                                    WebP: <strong style={{ color: 'var(--color-accent)' }}>
+                                        {previewingFile.previewSize
+                                            ? `~${Math.round(previewingFile.previewSize / 1024)} KB (-${Math.round((1 - previewingFile.previewSize / previewingFile.file.size) * 100)}%)`
+                                            : 'Számítás...'}
+                                    </strong>
+                                </span>
+                            </div>
+
+                            {/* Minőség csúszka */}
+                            <div className="flex items-center gap-4 mt-4 p-3 rounded-lg"
+                                style={{ backgroundColor: 'var(--color-bg)' }}>
+                                <label className="text-sm font-medium whitespace-nowrap" style={{ color: 'var(--color-text)' }}>
+                                    Minőség:
+                                </label>
+                                <input
+                                    type="range"
+                                    min="50"
+                                    max="100"
+                                    value={previewQuality}
+                                    onChange={(e) => handlePreviewQualityChange(Number(e.target.value))}
+                                    className="flex-1 h-2 rounded-lg appearance-none cursor-pointer"
+                                    style={{
+                                        background: `linear-gradient(to right, var(--color-primary) 0%, var(--color-accent) ${(previewQuality - 50) * 2}%, var(--color-border) ${(previewQuality - 50) * 2}%)`,
+                                    }}
+                                />
+                                <span className="text-sm font-bold min-w-12 text-right" style={{ color: 'var(--color-accent)' }}>
+                                    {previewQuality}%
+                                </span>
+                            </div>
+
+                            {/* Gombok */}
+                            <div className="flex gap-2 mt-4">
+                                <button
+                                    onClick={applyPreviewQuality}
+                                    className="flex-1 px-4 py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-90"
+                                    style={{ background: 'var(--gradient-primary)', color: 'white' }}>
+                                    Alkalmazás
+                                </button>
+                                <button
+                                    onClick={closePreviewModal}
+                                    className="px-4 py-2.5 rounded-lg text-sm font-semibold transition-all hover:opacity-80"
+                                    style={{
+                                        backgroundColor: 'var(--color-surface)',
+                                        color: 'var(--color-text-muted)',
+                                        border: '1px solid var(--color-border)',
+                                    }}>
+                                    Mégse
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>,
+                document.body
+            )}
         </div>
     );
 }
