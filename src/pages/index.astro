@@ -530,21 +530,21 @@ import FileUploader from "../components/FileUploader"
         </div>
 
         <!-- Bento Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Feature 1: Drag & Drop -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Feature 1: Egyszerű használat -->
           <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <div class="card-icon mb-4" style="background: var(--gradient-primary);">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M9 19l3 3m0 0l3-3m-3 3V10"/>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Drag & Drop</h3>
+            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Egyszerű használat</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Húzd rá a képeket a feltöltő területre vagy kattints a fájlok kiválasztásához. Egyszerre akár 10 képet is feltölthetsz.
+              Húzd a képeket a feltöltő területre, és dolgozz fel akár 10 fájlt egyszerre. A kész, optimalizált képeket a folyamat végén egyenként vagy egyetlen ZIP-fájlba csomagolva is letöltheted, várakozás nélkül.
             </p>
           </div>
 
-          <!-- Feature 2: Auto Optimization -->
+          <!-- Feature 2: Intelligens konvertálás -->
           <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <div class="card-icon mb-4" style="background: var(--gradient-primary);">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -552,62 +552,22 @@ import FileUploader from "../components/FileUploader"
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Állítható minőség</h3>
+            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Intelligens konvertálás</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Ha 1920px-nél nagyobb képet töltesz fel, automatikusan átméretezzük - nem kell külön resize-olnod. A kisebb képeket nem nagyítjuk fel. Állítható minőség (50-100%), WebP formátum.
+              Állítsd be a minőséget, és hasonlítsd össze az eredményt az élő előnézettel. A rendszer automatikusan WebP formátumra vált, és elvégzi a szükséges átméretezést, hogy a képeid a lehető legkisebbek legyenek.
             </p>
           </div>
 
-          <!-- Feature 3: SEO Names -->
+          <!-- Feature 3: SEO és Biztonság -->
           <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
             <div class="card-icon mb-4" style="background: var(--gradient-primary);">
               <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
               </svg>
             </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">SEO-barát fájlnevek</h3>
+            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">SEO és Biztonság</h3>
             <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Automatikus magyar ékezetek és szóközök kezelése. "Kéménytető Szigetelés.jpg" → "kemenyteto-szigeteles.webp".
-            </p>
-          </div>
-
-          <!-- Feature 4: Preview -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Minőség előnézet</h3>
-            <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Before/after csúszkával hasonlítsd össze az eredeti és tömörített képet. Látod a minőségkülönbséget és a méretcsökkenést konvertálás előtt.
-            </p>
-          </div>
-
-          <!-- Feature 5: Instant Download -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Letöltés</h3>
-            <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Egyenként vagy ZIP-ben letöltheted az összes optimalizált képet SEO-barát fájlnevekkel.
-            </p>
-          </div>
-
-          <!-- Feature 6: Privacy -->
-          <div class="bento-card p-8 rounded-2xl" style="background-color: var(--color-bg); border: 1px solid var(--color-border); box-shadow: var(--shadow);">
-            <div class="card-icon mb-4" style="background: var(--gradient-primary);">
-              <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-              </svg>
-            </div>
-            <h3 class="text-xl font-bold mb-3" style="font-family: var(--font-display); color: var(--color-text);">Adatvédelem</h3>
-            <p class="leading-relaxed" style="color: var(--color-text-muted);">
-              Kliens oldali feldolgozás - a képek nem hagyják el a gépedet. Nincs feltöltés, nincs tárolás.
+              Automatikus ékezetmentesítés a keresőoptimalizált fájlnevekért. A feldolgozás teljes egészében a böngésződben történik, így a képek soha nem hagyják el a gépedet. Nincs feltöltés, nincs tárolás, 100% privát.
             </p>
           </div>
         </div>
