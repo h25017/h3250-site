@@ -403,28 +403,28 @@ export default function FileUploader() {
                         {files.map((item) => (
                             <div
                                 key={item.id}
-                                className="relative group rounded-lg overflow-hidden transition-all"
+                                className="relative group rounded-lg overflow-hidden transition-all flex flex-col"
                                 style={{
-                                    backgroundColor: 'var(--color-bg)',
+                                    backgroundColor: 'var(--color-surface)',
                                     border: item.status === 'done'
                                         ? '2px solid var(--color-accent)'
                                         : '1px solid var(--color-border)',
                                 }}>
                                 {/* Kis preview kép */}
-                                <div className="relative h-16 w-full overflow-hidden">
+                                <div className="relative h-20 w-full overflow-hidden shrink-0">
                                     <img src={item.preview} alt="" className="w-full h-full object-cover" />
                                     {/* Státusz ikon */}
-                                    <div className="absolute top-1 left-1">
+                                    <div className="absolute top-1.5 left-1.5">
                                         <StatusIcon status={item.status} />
                                     </div>
                                     {/* Törlés gomb hover-re */}
                                     {item.status !== 'converting' && (
                                         <button
                                             onClick={() => removeFile(item.id)}
-                                            className="absolute top-1 right-1 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                                            className="absolute top-1.5 right-1.5 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
                                             style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'white' }}
                                             title="Eltávolítás">
-                                            <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>
                                         </button>
@@ -436,42 +436,83 @@ export default function FileUploader() {
                                                 e.stopPropagation();
                                                 openPreviewModal(item.id);
                                             }}
-                                            className="absolute bottom-1 right-1 p-1 rounded transition-all hover:scale-110"
-                                            style={{ backgroundColor: 'rgba(0,0,0,0.6)', color: 'white' }}
+                                            className="absolute bottom-1.5 right-1.5 px-2 py-1 rounded-md flex items-center gap-1 transition-all hover:scale-105"
+                                            style={{
+                                                background: 'linear-gradient(135deg, rgba(8, 145, 178, 0.9), rgba(34, 211, 238, 0.9))',
+                                                color: 'white',
+                                                boxShadow: '0 2px 8px rgba(0,0,0,0.3)'
+                                            }}
                                             title="Előnézet">
                                             <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                             </svg>
+                                            <span className="text-[10px] font-semibold">Előnézet</span>
                                         </button>
                                     )}
                                 </div>
 
                                 {/* Info + letöltés */}
-                                <div className="p-2" style={{ backgroundColor: 'var(--color-surface)' }}>
-                                    <p className="text-xs font-medium truncate" style={{ color: 'var(--color-text)' }}>
+                                <div className="p-3 flex flex-col grow" style={{ backgroundColor: 'var(--color-surface)' }}>
+                                    {/* Fájlnév */}
+                                    <p className="text-sm font-semibold truncate leading-tight mb-2"
+                                        style={{ color: 'var(--color-text)' }}
+                                        title={item.status === 'done' ? item.slugifiedName : item.file.name}>
                                         {item.status === 'done' ? item.slugifiedName : item.file.name}
                                     </p>
-                                    <div className="text-[11px] mt-1" style={{ color: 'var(--color-text-muted)' }}>
-                                        <div className="flex items-center justify-between">
+
+                                    {/* Méret info */}
+                                    <div className="text-xs space-y-1 mb-2">
+                                        <div style={{ color: 'var(--color-text-muted)' }}>{item.width}×{item.height} px</div>
+                                        <div className="flex items-center gap-1.5" style={{ color: 'var(--color-text-muted)' }}>
                                             <span>{Math.round(item.file.size / 1024)} KB</span>
+                                            <span>→</span>
                                             {item.status === 'pending' && (
-                                                <span className="font-medium" style={{ color: 'var(--color-primary)' }}>
-                                                    →~{Math.round(estimateWebpSize(item.file.size) / 1024)} KB
+                                                <span
+                                                    className="font-bold px-1.5 py-0.5 rounded"
+                                                    style={{
+                                                        background: 'var(--gradient-primary)',
+                                                        color: 'white'
+                                                    }}>
+                                                    ~{Math.round(estimateWebpSize(item.file.size) / 1024)} KB
                                                 </span>
                                             )}
                                             {item.status === 'done' && item.convertedFile && (
                                                 <span className="font-bold" style={{ color: 'var(--color-accent)' }}>
-                                                    -{Math.round((1 - item.convertedFile.size / item.file.size) * 100)}%
+                                                    {Math.round(item.convertedFile.size / 1024)} KB
                                                 </span>
                                             )}
+                                            {item.status === 'converting' && (
+                                                <span>...</span>
+                                            )}
                                         </div>
-                                        <div>{item.width}×{item.height}</div>
                                     </div>
+
+                                    {/* Megtakarítás badge */}
+                                    <div
+                                        className="flex items-center justify-center py-2 rounded-md text-xs font-bold"
+                                        style={{
+                                            background: item.status === 'done'
+                                                ? 'linear-gradient(135deg, rgba(8, 145, 178, 0.2), rgba(34, 211, 238, 0.2))'
+                                                : 'rgba(8, 145, 178, 0.1)',
+                                            color: item.status === 'done' ? 'var(--color-accent)' : 'var(--color-primary)'
+                                        }}>
+                                        {item.status === 'done' && item.convertedFile && (
+                                            <>{Math.round((1 - item.convertedFile.size / item.file.size) * 100)}% kisebb</>
+                                        )}
+                                        {item.status === 'pending' && (
+                                            <>~{Math.round((1 - estimateWebpSize(item.file.size) / item.file.size) * 100)}% kisebb méret</>
+                                        )}
+                                        {item.status === 'converting' && (
+                                            <>Feldolgozás...</>
+                                        )}
+                                    </div>
+
+                                    {/* Letöltés gomb */}
                                     {item.status === 'done' && (
                                         <button
                                             onClick={() => handleDownloadSingle(item)}
-                                            className="w-full mt-1.5 p-1.5 rounded text-xs font-medium"
+                                            className="w-full py-2 mt-2 rounded-md text-sm font-semibold transition-all hover:opacity-90"
                                             style={{ background: 'var(--gradient-primary)', color: 'white' }}>
                                             Letöltés
                                         </button>
@@ -481,16 +522,23 @@ export default function FileUploader() {
                         ))}
                         {/* Új kép hozzáadása gomb */}
                         {files.length < MAX_FILES && (
-                            <label className="flex flex-col items-center justify-center rounded-lg cursor-pointer transition-all hover:opacity-80"
+                            <label className="flex flex-col items-center justify-center rounded-lg cursor-pointer transition-all hover:border-opacity-100 group"
                                 style={{
                                     backgroundColor: 'var(--color-bg)',
                                     border: '2px dashed var(--color-border)',
-                                    minHeight: '100px',
+                                    minHeight: '180px',
                                 }}>
-                                <svg className="w-6 h-6 mb-1" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
-                                </svg>
-                                <span className="text-[10px]" style={{ color: 'var(--color-text-muted)' }}>
+                                <div
+                                    className="w-10 h-10 rounded-full flex items-center justify-center mb-2 transition-transform group-hover:scale-110"
+                                    style={{ backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)' }}>
+                                    <svg className="w-5 h-5" style={{ color: 'var(--color-text-muted)' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
+                                    </svg>
+                                </div>
+                                <span className="text-xs font-medium" style={{ color: 'var(--color-text-muted)' }}>
+                                    Új kép
+                                </span>
+                                <span className="text-[10px] mt-0.5" style={{ color: 'var(--color-text-muted)', opacity: 0.7 }}>
                                     {files.length}/{MAX_FILES}
                                 </span>
                                 <input
